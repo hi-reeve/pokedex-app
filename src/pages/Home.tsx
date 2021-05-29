@@ -47,6 +47,7 @@ const Home = () => {
         convertData(data);
 
         return () => {
+            fetchVariables.offset = 0;
             setPokemonList(() => {
                 return [];
             });

@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--dark-gray);
+}
+
+:root {
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --dark-gray: rgb(59, 68, 75);
+    --soft-gray: #fdfdfd;
+    --rounded: 0.25rem;
+
+    /* pokemon nature type color  */
+    --nature-bug: #a8b820;
+    --nature-dark: #705848;
+    --nature-dragon: #7038f8;
+    --nature-electric: #f8d030;
+    --nature-fairy: #ee99ac;
+    --nature-fighting: #c03028;
+    --nature-fire: #f08030;
+    --nature-flying: #a890f0;
+    --nature-ghost: #705898;
+    --nature-grass: #78c850;
+    --nature-ground: #e0c068;
+    --nature-ice: #98d8d8;
+    --nature-normal: #a8a878;
+    --nature-poison: #a040a0;
+    --nature-psychic: #f85888;
+    --nature-rock: #b8a038;
+    --nature-shadow: #3d3d3d;
+    --nature-steel: #b8b8d0;
+    --nature-unknown: #68a090;
+    --nature-water: #6890f0;
+
+    --nature-bug-light: #C6D16E;
+    --nature-dark-light: #A29288;
+    --nature-dragon-light: #A27DFA;
+    --nature-electric-light: #FAE078;
+    --nature-fairy-light: #F4BDC9;
+    --nature-fighting-light: #D67873;
+    --nature-fire-light: #F5AC78;
+    --nature-flying-light: #C6B7F5;
+    --nature-ghost-light: #A292BC;
+    --nature-grass-light: #A7DB8D;
+    --nature-ground-light: #EBD69D;
+    --nature-ice-light: #BCE6E6;
+    --nature-normal-light: #C6C6A7;
+    --nature-poison-light: #C183C1;
+    --nature-psychic-light: #FA92B2;
+    --nature-rock-light: #D1C17D;
+    --nature-shadow-light: #585858;
+    --nature-steel-light: #D1D1E0;
+    --nature-unknown-light: #9DC1B7;
+    --nature-water-light: #9DB7F5;
+}
+body {
+    font-size: 16px;
+    font-family: "Montserrat", sans-serif;
+
+    background-color: var(--soft-gray);
+}
+
+a {
+    text-decoration: none;
+}
+
+.icon-back{
+	color : white;
+}

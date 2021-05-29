@@ -24,11 +24,9 @@ function App() {
                         <Navbar />
                         <Switch>
                             <Route exact path="/">
-                                <Redirect to="/pokemon" />
-                            </Route>
-                            <Route exact path="/pokemon">
                                 <Home />
                             </Route>
+
                             <Route exact path="/pokemon/:name">
                                 <PokemonDetail />
                             </Route>

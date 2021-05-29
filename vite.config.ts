@@ -11,7 +11,7 @@ export default defineConfig({
             manifest: {
                 name: "pokedex pokemon app",
                 short_name: "pokedex",
-                start_url: "/pokemon",
+                start_url: ".",
                 display: "standalone",
                 background_color: "#FFFFFF",
                 theme_color: "#FFFFFF",

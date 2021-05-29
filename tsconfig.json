@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "ESNext",
-        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "lib": ["DOM", "DOM.Iterable", "ESNext", "WebWorker"],
         "allowJs": false,
         "skipLibCheck": false,
         "esModuleInterop": false,
@@ -17,7 +17,9 @@
         "baseUrl": ".",
         "paths": {
             "@/*": ["./src/*"]
-        }
+        },
+        "types": ["vite-plugin-pwa/client"],
+		"skipDefaultLibCheck": true
     },
     "include": ["./src"]
 }

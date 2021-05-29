@@ -8,24 +8,33 @@ type PokemonInfoContainerProps = {
 };
 const PokemonInfoContainer = styled.div<PokemonInfoContainerProps>`
     display: flex;
-    width: 100%;
+    flex-direction: column;
+
+    width: 50%;
     padding: 2rem;
     background: ${({ color }) => `var(--nature-${color}-light)`};
+    @media screen and (max-width: 991px) {
+        flex-direction: row;
+        width: 100%;
+    }
 `;
 
 const PokemonImage = styled.img`
-    flex: 1;
-    max-width: 50%;
-	width: 100%;
-	height: 100%;
+    max-width: 100%;
+    max-height: 300px;
+    @media screen and (max-width: 991px) {
+        flex: 1;
+    }
 `;
 
 const PokemonDetailContainer = styled.div`
     display: flex;
-    flex: 1;
-    justify-content: center;
     flex-direction: column;
     padding-left: 1rem;
+    @media screen and (max-width: 991px) {
+        justify-content: center;
+		flex: 1;
+    }
 `;
 
 const PokemonName = styled.h1`

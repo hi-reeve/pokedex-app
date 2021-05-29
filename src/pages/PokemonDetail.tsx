@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Tab, Tabs } from "@/components/ui/Tab/Tab";
 
 import Loader from "@/components/Loader";
+import styled from "@emotion/styled";
 
 const IconArrowLeft = React.lazy(
     () => import("@/components/icon/IconArrowLeft")
@@ -29,6 +30,15 @@ const PokemonMoves = React.lazy(
 type RouteParams = {
     name: string;
 };
+
+const PokemonDetailContainer = styled.div`
+    display: flex;
+	min-height: 100vh;
+    @media screen and (max-width: 991px) {
+        flex-direction: column;
+		min-height: auto;
+    }
+`;
 const PokemonDetail = () => {
     const routeParams: RouteParams = useParams();
     const [pokemon, setPokemon] = useState<Pokemon>();
@@ -69,16 +79,24 @@ const PokemonDetail = () => {
                             />
                         </Button>
                     </ToolbarBack>
-                    <PokemonDetailInfo pokemon={pokemon} />
-                    <Tabs>
-                        <Tab label="about" tabName="About">
-                            <PokemonAbout pokemon={pokemon} />
-                            <PokemonStats color={color} stats={pokemon.stats} />
-                        </Tab>
-                        <Tab label="move" tabName="Move">
-                            <PokemonMoves color={color} moves={pokemon.moves} />
-                        </Tab>
-                    </Tabs>
+                    <PokemonDetailContainer>
+                        <PokemonDetailInfo pokemon={pokemon} />
+                        <Tabs>
+                            <Tab label="about" tabName="About">
+                                <PokemonAbout pokemon={pokemon} />
+                                <PokemonStats
+                                    color={color}
+                                    stats={pokemon.stats}
+                                />
+                            </Tab>
+                            <Tab label="move" tabName="Move">
+                                <PokemonMoves
+                                    color={color}
+                                    moves={pokemon.moves}
+                                />
+                            </Tab>
+                        </Tabs>
+                    </PokemonDetailContainer>
                 </Suspense>
             </>
         );

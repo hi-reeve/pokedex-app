@@ -26,7 +26,6 @@ function App() {
                             <Route exact path="/">
                                 <Home />
                             </Route>
-
                             <Route exact path="/pokemon/:name">
                                 <PokemonDetail />
                             </Route>

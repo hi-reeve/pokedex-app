@@ -14,7 +14,7 @@ export const Navbar = () => {
         <NavContainer>
             <NavLogoContainer>
                 <Link to="/">
-                    <NavLogo src={PokemonLogo} />
+					<NavLogo src={PokemonLogo} alt="Nav Logo" width="100%" height="100%" />
                 </Link>
             </NavLogoContainer>
             <NavMenu isOpen={isOpen}>

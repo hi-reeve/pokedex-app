@@ -16,6 +16,8 @@ const PokemonInfoContainer = styled.div<PokemonInfoContainerProps>`
 const PokemonImage = styled.img`
     flex: 1;
     max-width: 50%;
+	width: 100%;
+	height: 100%;
 `;
 
 const PokemonDetailContainer = styled.div`
@@ -79,8 +81,7 @@ const PokemonDetailInfo: React.FC<Props> = ({ pokemon }) => {
     );
 
     useEffect(() => {
-		const timeout = setTimeout(() => {
-			
+        const timeout = setTimeout(() => {
             if (currentImage === pokemon.sprites.front_default)
                 setCurrentImage(pokemon.sprites.back_default);
             else setCurrentImage(pokemon.sprites.front_default);
@@ -94,7 +95,13 @@ const PokemonDetailInfo: React.FC<Props> = ({ pokemon }) => {
     return (
         <>
             <PokemonInfoContainer color={pokemon.types[0].type.name}>
-                <PokemonImage src={currentImage} />
+                <PokemonImage
+                    src={currentImage}
+                    alt={pokemon.name}
+                    loading="lazy"
+                    width="100%"
+                    height="100%"
+                />
                 <PokemonDetailContainer>
                     <PokemonId>
                         {pokemon.id.toString().padStart(4, "#000")}
@@ -109,6 +116,9 @@ const PokemonDetailInfo: React.FC<Props> = ({ pokemon }) => {
                                 >
                                     <PokemonNatureIcon
                                         src={`/icon/${type.type.name}-type-icon.svg`}
+                                        alt={type.type.name}
+                                        width="24px"
+                                        height="24px"
                                     />
                                     <PokemonNatureName>
                                         {type.type.name}

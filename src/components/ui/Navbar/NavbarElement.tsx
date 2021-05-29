@@ -18,17 +18,19 @@ export const NavContainer = styled.nav`
 `;
 export const NavLogoContainer = styled.div`
     max-width: 8%;
-
+	width: 100%;
+	height: 100%;
 	@media screen and (max-width : 991px){
 		max-width: 15%;
 	}
     @media screen and (max-width: 525px) {
-        max-width: 20%;
+        max-width: 25%;
     }
 `;
 
 export const NavLogo = styled.img`
     width: 100%;
+	height: 100%;
 `;
 
 export const NavBurger = styled.div`

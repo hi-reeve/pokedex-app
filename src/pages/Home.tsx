@@ -1,11 +1,14 @@
-import PokemonCard from "@/components/Pokemons/PokemonCard";
 import { GET_POKEMONS } from "@/graphql/queries/getPokemons";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import { Pokemons, PokemonsResponse } from "@/types/Pokemons";
 import { useQuery } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import "@/pages/Home.css";
 import { Link } from "react-router-dom";
+import Loader from "@/components/Loader";
+const PokemonCard = React.lazy(
+    () => import("@/components/Pokemons/PokemonCard")
+);
 const Home = () => {
     const [pokemonList, setPokemonList] = useState<Pokemons[]>([]);
     const [queryLimit, setQueryLimit] = useState<number>(10);
@@ -13,7 +16,7 @@ const Home = () => {
         GET_POKEMONS,
         {
             variables: {
-                limit: 10,
+                limit: 20,
                 offset: 0,
             },
         }
@@ -34,7 +37,7 @@ const Home = () => {
         convertData(data);
 
         return () => {
-            setQueryLimit(10);
+            setQueryLimit(20);
             setPokemonList([]);
         };
     }, [data, queryLimit]);
@@ -47,27 +50,32 @@ const Home = () => {
         });
         convertData(fetchMoreData);
     };
-    useInfiniteScroll({
-        onLoadMore: handleFetchMore,
-    });
+    // useInfiniteScroll({
+    //     onLoadMore: handleFetchMore,
+    // });
 
     if (error) return <p>Error {error.message}</p>;
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Loader />;
 
     return (
-        <div>
-            <div className="pokemon--container">
-                {pokemonList.map(pokemon => {
-                    return (
-                        <Link to={`/pokemon/${pokemon.name}`} key={pokemon.id}>
-                            <PokemonCard pokemon={pokemon} />
-                        </Link>
-                    );
-                })}
-            </div>
-            <div>Load More...</div>
-        </div>
+        <>
+            <Suspense fallback={<Loader />}>
+                <div className="pokemon--container">
+                    {pokemonList.map(pokemon => {
+                        return (
+                            <Link
+                                to={`/pokemon/${pokemon.name}`}
+                                key={pokemon.id}
+                            >
+                                <PokemonCard pokemon={pokemon} />
+                            </Link>
+                        );
+                    })}
+                </div>
+                <div>Load More...</div>
+            </Suspense>
+        </>
     );
 };
 

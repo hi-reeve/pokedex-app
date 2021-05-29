@@ -18,7 +18,9 @@ const PokemonContainer = styled.div`
 `;
 
 const PokemonImage = styled.img`
-    min-width: 50%;
+    max-width: 50%;
+	width: 100%;
+	height: 100%;
     margin-left: auto;
 `;
 
@@ -56,7 +58,7 @@ const PokemonCard: React.FC<Props> = ({ pokemon }) => {
                 <PokemonName>{pokemon.name}</PokemonName>
                 <PokemonOwned>Owned : 0</PokemonOwned>
             </PokemonInfoContainer>
-            <PokemonImage src={pokemon.image} />
+			<PokemonImage src={pokemon.image} alt={pokemon.name} loading="lazy" width="100%" height="100%" />
         </PokemonContainer>
     );
 };

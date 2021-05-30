@@ -2,7 +2,9 @@ import { Pokemon } from "@/types/Pokemons";
 import React, { useEffect, useState } from "react";
 
 import styled from "@emotion/styled";
-
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/db";
+import { useFormatPokemonId } from "@/hooks/useFormatter";
 type PokemonInfoContainerProps = {
     color: string;
 };
@@ -88,6 +90,10 @@ const PokemonDetailInfo: React.FC<Props> = ({ pokemon }) => {
         pokemon.sprites.front_default
     );
 
+    const ownedCount = useLiveQuery(() =>
+        db.pokemon.where("name").equals(pokemon.name).count()
+    );
+
     useEffect(() => {
         const timeout = setTimeout(() => {
             if (currentImage === pokemon.sprites.front_default) {
@@ -115,9 +121,7 @@ const PokemonDetailInfo: React.FC<Props> = ({ pokemon }) => {
                     height="100%"
                 />
                 <PokemonDetailContainer>
-                    <PokemonId>
-                        {pokemon.id.toString().padStart(4, "#000")}
-                    </PokemonId>
+                    <PokemonId>{useFormatPokemonId(pokemon.id)}</PokemonId>
                     <PokemonName>{pokemon.name}</PokemonName>
                     <PokemonNatureContainer>
                         {pokemon.types.map(type => {
@@ -139,7 +143,7 @@ const PokemonDetailInfo: React.FC<Props> = ({ pokemon }) => {
                             );
                         })}
                     </PokemonNatureContainer>
-                    <PokemonOwned>Owned : 0</PokemonOwned>
+                    <PokemonOwned>Owned : {ownedCount}</PokemonOwned>
                 </PokemonDetailContainer>
             </PokemonInfoContainer>
         </>

@@ -1,9 +1,11 @@
-export type Pokemons = {
+export interface Pokemons {
     id: number;
     name: string;
-    url: string;
     image: string;
-};
+}
+export interface PokemonsWithNickname extends Pokemons {
+    nickname: string;
+}
 
 export type PokemonsResponse = {
     pokemons: {

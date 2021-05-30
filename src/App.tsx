@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from "react";
 import { Navbar } from "./components/ui/Navbar";
-import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
+import { Switch, HashRouter as Router, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import MyPokemon from "./pages/MyPokemon";

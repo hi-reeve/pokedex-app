@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
     NavContainer,
@@ -7,7 +7,7 @@ import {
     NavMenu,
     NavLink,
 } from "./NavbarElement";
-import PokemonLogo from "@/assets/images/pokemon-logo-min.png";
+import PokemonLogo from "@/assets/images/pokemon-logo-min.svg";
 export const Navbar = () => {
     const navRef = useRef<HTMLElement>(null);
 	let lastScrollY = 0;

@@ -65,7 +65,7 @@ const PokemonNature = styled.div<PokemonNatureProps>`
     padding: 0.25rem 0.5rem;
     margin: 0.5rem 0.25rem 0.5rem 0;
     border-radius: var(--rounded);
-    box-shadow: var(--shadow);
+    /* box-shadow: var(--shadow); */
 `;
 const PokemonNatureIcon = styled.img`
     width: 24px;

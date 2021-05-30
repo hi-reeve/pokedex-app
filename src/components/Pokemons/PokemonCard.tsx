@@ -1,5 +1,5 @@
 import { Pokemons } from "@/types/Pokemons";
-import React from "react";
+import React, { Suspense, useContext, useState } from "react";
 
 import styled from "@emotion/styled";
 import { useLiveQuery } from "dexie-react-hooks";
@@ -7,6 +7,15 @@ import { db, IPokemonDb } from "@/db";
 import { useFormatPokemonId } from "@/hooks/useFormatter";
 import { Button } from "../Button/Button";
 import { releasePokemon } from "@/db/pokemon";
+import Loader from "../Loader";
+import { DialogButton } from "../dialog/Dialog";
+import { ToastContext } from "@/context/ToastContext";
+const CatchingDialog = React.lazy(
+    () => import("@/components/dialog/CatchingDialog")
+);
+const DialogConfirmation = React.lazy(
+    () => import("@/components/dialog/AfterCatchDialog")
+);
 const PokemonContainer = styled.div`
     background: white;
     display: flex;
@@ -86,43 +95,117 @@ const PokemonCard: React.FC<Props> = ({ pokemon, isMyPokemon }) => {
         );
     };
 
-    const handlePokemonRelease = (event: React.MouseEvent) => {
-        event.preventDefault();
-    };
-    return (
-        <PokemonContainer>
-            <PokemonInfoContainer>
-                <PokemonId>{useFormatPokemonId(pokemon.id)}</PokemonId>
+    const toastContext = useContext(ToastContext);
 
-                {isMyPokemon && (
-                    <PokemonNickname>
-                        {(pokemon as IPokemonDb).nickname}
-                    </PokemonNickname>
+    const [selectedPokemon, setSelectedPokemon] = useState(0);
+
+    // open the confirmation dialog
+    const handleDialogConfirm = (
+        event: React.MouseEvent,
+        pokemonId: number
+    ) => {
+        event.preventDefault();
+        setDialogConfirmVisible(true);
+        setSelectedPokemon(pokemonId);
+    };
+
+    // release the pokemon
+    const handlePokemonRelease = () => {
+        if (selectedPokemon === 0) return;
+
+        setDialogConfirmVisible(false);
+        setReleaseDialogVisible(true);
+        const releaseTimeout = setTimeout(() => {
+            releasePokemon(selectedPokemon);
+            setReleaseDialogVisible(false);
+            clearTimeout(releaseTimeout);
+            toastContext.setMessageHandler("Pokemon has been released");
+            toastContext.openToast();
+            const toastTimeout = setTimeout(() => {
+                toastContext.closeToast();
+                clearTimeout(toastTimeout);
+            }, 3000);
+        }, 3000);
+    };
+
+    const [releaseDialogVisible, setReleaseDialogVisible] = useState(false);
+    const [dialogConfirmVisible, setDialogConfirmVisible] = useState(false);
+
+    const dialogConfirmContent = (
+        <>
+            <p>Are you sure want to release this pokemon?</p>
+            <DialogButton
+                onClick={e => {
+                    e.preventDefault();
+                    handlePokemonRelease();
+                }}
+                bgColor="var(--invalid-input)"
+            >
+                Release
+            </DialogButton>
+            <DialogButton
+                onClick={e => {
+                    e.preventDefault();
+                    setDialogConfirmVisible(false);
+                }}
+                bgColor={`#d3d3d3`}
+                style={{ marginLeft: "1rem" }}
+            >
+                Cancel
+            </DialogButton>
+        </>
+    );
+    return (
+        <>
+            <PokemonContainer>
+                <PokemonInfoContainer>
+                    <PokemonId>{useFormatPokemonId(pokemon.id)}</PokemonId>
+
+                    {isMyPokemon && (
+                        <PokemonNickname>
+                            {(pokemon as IPokemonDb).nickname}
+                        </PokemonNickname>
+                    )}
+                    <PokemonName>{pokemon.name}</PokemonName>
+                    {!isMyPokemon && (
+                        <PokemonOwned>
+                            Owned : {ownedCount(pokemon.name)}
+                        </PokemonOwned>
+                    )}
+                    {isMyPokemon && (
+                        <ReleaseButton
+                            onClick={e =>
+                                handleDialogConfirm(
+                                    e,
+                                    (pokemon as IPokemonDb).dbid!
+                                )
+                            }
+                        >
+                            <ReleaseIcon
+                                src="/icon/open-pokeball.svg"
+                                alt={(pokemon as IPokemonDb).nickname}
+                            />
+                            <ReleaseButtonText>Release</ReleaseButtonText>
+                        </ReleaseButton>
+                    )}
+                </PokemonInfoContainer>
+                <PokemonImage
+                    src={pokemon.image}
+                    alt={pokemon.name}
+                    loading="lazy"
+                    width="100%"
+                    height="100%"
+                />
+            </PokemonContainer>
+            <Suspense fallback={<Loader />}>
+                {releaseDialogVisible && <CatchingDialog isReleasing />}
+                {dialogConfirmVisible && (
+                    <DialogConfirmation>
+                        {dialogConfirmContent}
+                    </DialogConfirmation>
                 )}
-                <PokemonName>{pokemon.name}</PokemonName>
-                {!isMyPokemon && (
-                    <PokemonOwned>
-                        Owned : {ownedCount(pokemon.name)}
-                    </PokemonOwned>
-                )}
-                {isMyPokemon && (
-                    <ReleaseButton onClick={handlePokemonRelease}>
-                        <ReleaseIcon
-                            src="/icon/open-pokeball.svg"
-                            alt={(pokemon as IPokemonDb).nickname}
-                        />
-                        <ReleaseButtonText>Release</ReleaseButtonText>
-                    </ReleaseButton>
-                )}
-            </PokemonInfoContainer>
-            <PokemonImage
-                src={pokemon.image}
-                alt={pokemon.name}
-                loading="lazy"
-                width="100%"
-                height="100%"
-            />
-        </PokemonContainer>
+            </Suspense>
+        </>
     );
 };
 

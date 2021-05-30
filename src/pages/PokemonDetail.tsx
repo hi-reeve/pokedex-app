@@ -179,6 +179,7 @@ const PokemonDetail = () => {
         setNickname(event.target.value);
     };
 
+	// success catch content
     const successCatchDialogContent = (
         <>
             <p>
@@ -206,6 +207,7 @@ const PokemonDetail = () => {
         </>
     );
 
+	// failed catch content
     const failedCatchDialogContent = (
         <>
             <p>Oh no! {pokemon?.name} got away!</p>

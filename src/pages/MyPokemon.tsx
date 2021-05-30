@@ -9,15 +9,19 @@ const PokemonCard = React.lazy(
     () => import("@/components/Pokemons/PokemonCard")
 );
 const MyPokemonContainer = styled.div`
-    padding: 1rem 2rem;
+    padding: 2rem;
 `;
 const MyPokemonTitle = styled.h1`
     margin: 2rem 0 0 2rem;
 `;
+
+const MyPokemonCount = styled.h4`
+    margin: .5rem 0 0 2rem;
+`;
 const MyPokemon = () => {
     const myPokemons = useLiveQuery(() => db.pokemon.toArray());
-
-    if (!myPokemons)
+    const ownedPokemon = useLiveQuery(() => db.pokemon.count());
+    if (!myPokemons || myPokemons.length === 0)
         return (
             <MyPokemonContainer>
                 <h4>You haven't catch any pokemon yet</h4>
@@ -27,6 +31,9 @@ const MyPokemon = () => {
         <>
             <Suspense fallback={<Loader />}>
                 <MyPokemonTitle>My Pokemons</MyPokemonTitle>
+                <MyPokemonCount>
+                    Total pokemon owned : {ownedPokemon}
+                </MyPokemonCount>
                 <div className="pokemon--container">
                     {myPokemons.map(pokemon => (
                         <Link

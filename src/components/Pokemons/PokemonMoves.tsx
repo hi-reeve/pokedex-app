@@ -14,7 +14,7 @@ type Props = {
 
 const PokemonMoveBadgeWrapper = styled.div`
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     place-items: center;
     vertical-align: middle;
     gap: 1rem;
@@ -36,7 +36,9 @@ const PokemonMoveBadge = styled.div`
     width: 100%;
     height: 40px;
     padding: 0.5rem;
-    box-shadow: var(--shadow);
+    /* box-shadow: var(--shadow); */
+	border: 1px solid hsla(0,0%,0%,0.5);
+	border-radius: var(--rounded);
     font-size: 0.7rem;
 `;
 const PokemonMoves: React.FC<Props> = ({ color, moves }) => {

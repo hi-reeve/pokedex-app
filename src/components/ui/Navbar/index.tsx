@@ -18,7 +18,7 @@ export const Navbar = () => {
         navRef.current!.style.top = "0";
 		navRef.current!.style.left = "0";
 		
-        if (window.pageYOffset > 100 && currentScrollY > lastScrollY) {
+        if (window.pageYOffset > 10 && currentScrollY > lastScrollY) {
             navRef.current!.style.transform = "translateY(-90px)";
         } else {
             navRef.current!.style.transform = "translateY(0)";

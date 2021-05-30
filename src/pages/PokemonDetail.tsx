@@ -11,6 +11,7 @@ import { DialogButton } from "@/components/dialog/Dialog";
 import { InputError, InputText, InputWrapper } from "@/components/input/Input";
 import { addNewPokemon, checkExistingNickname } from "@/db/pokemon";
 import { ToastContext } from "@/context/ToastContext";
+import Spinner  from "@/components/Loader/Spinner";
 
 const CatchingDialog = React.lazy(
     () => import("@/components/dialog/CatchingDialog")
@@ -179,7 +180,7 @@ const PokemonDetail = () => {
         setNickname(event.target.value);
     };
 
-	// success catch content
+    // success catch content
     const successCatchDialogContent = (
         <>
             <p>
@@ -207,7 +208,7 @@ const PokemonDetail = () => {
         </>
     );
 
-	// failed catch content
+    // failed catch content
     const failedCatchDialogContent = (
         <>
             <p>Oh no! {pokemon?.name} got away!</p>
@@ -225,9 +226,9 @@ const PokemonDetail = () => {
 
     const handleOnMouseLeave = () => {
         setFabCatchIconSrc("/icon/pokeball.svg");
-	};
-	
-	// on click catch button
+    };
+
+    // on click catch button
     const handleOnCatch = () => {
         setIsCatched(Math.floor(Math.random() * 2));
         setCatchDialogVisible(true);
@@ -245,7 +246,9 @@ const PokemonDetail = () => {
     if (pokemon) {
         return (
             <>
-                <Suspense fallback={<Loader />}>
+                <Suspense
+                    fallback={<Spinner color={`var(--nature-${color})`} />}
+                >
                     <PokemonDetailContainer>
                         <PokemonDetailInfo pokemon={pokemon} />
                         <Tabs>
@@ -290,7 +293,7 @@ const PokemonDetail = () => {
         );
     }
 
-    return <div>No result found</div>;
+    return <Spinner color={`var(--nature-${color})`} />;
 };
 
 export default PokemonDetail;

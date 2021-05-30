@@ -7,9 +7,9 @@ import { db, IPokemonDb } from "@/db";
 import { useFormatPokemonId } from "@/hooks/useFormatter";
 import { Button } from "../Button/Button";
 import { releasePokemon } from "@/db/pokemon";
-import Loader from "../Loader";
 import { DialogButton } from "../dialog/Dialog";
 import { ToastContext } from "@/context/ToastContext";
+import  Spinner  from "../Loader/Spinner";
 const CatchingDialog = React.lazy(
     () => import("@/components/dialog/CatchingDialog")
 );
@@ -197,7 +197,7 @@ const PokemonCard: React.FC<Props> = ({ pokemon, isMyPokemon }) => {
                     height="100%"
                 />
             </PokemonContainer>
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<Spinner />}>
                 {releaseDialogVisible && <CatchingDialog isReleasing />}
                 {dialogConfirmVisible && (
                     <DialogConfirmation>

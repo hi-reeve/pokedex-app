@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
     NavContainer,
@@ -9,6 +9,15 @@ import {
 } from "./NavbarElement";
 import PokemonLogo from "@/assets/images/pokemon-logo-min.png";
 export const Navbar = () => {
+    const handleOnScroll = (event: Event) => {
+        // #TODO add navbar on scroll
+    };
+    useEffect(() => {
+        window.addEventListener("scroll", handleOnScroll);
+        return () => {
+            window.removeEventListener("scroll", handleOnScroll);
+        };
+    }, []);
     return (
         <NavContainer>
             <NavLogoContainer>

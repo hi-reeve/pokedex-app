@@ -1,4 +1,5 @@
-import Loader from "@/components/Loader";
+
+import Spinner from "@/components/Loader/Spinner";
 import { db } from "@/db";
 import styled from "@emotion/styled";
 import { useLiveQuery } from "dexie-react-hooks";
@@ -16,7 +17,7 @@ const MyPokemonTitle = styled.h1`
 `;
 
 const MyPokemonCount = styled.h4`
-    margin: .5rem 0 0 2rem;
+    margin: 0.5rem 0 0 2rem;
 `;
 const MyPokemon = () => {
     const myPokemons = useLiveQuery(() => db.pokemon.toArray());
@@ -29,7 +30,7 @@ const MyPokemon = () => {
         );
     return (
         <>
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<Spinner />}>
                 <MyPokemonTitle>My Pokemons</MyPokemonTitle>
                 <MyPokemonCount>
                     Total pokemon owned : {ownedPokemon}

@@ -6,6 +6,7 @@ import "@/pages/Home.css";
 import { Link } from "react-router-dom";
 import Loader from "@/components/Loader";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
+import Spinner from "@/components/Loader/Spinner";
 
 const PokemonCard = React.lazy(
     () => import("@/components/Pokemons/PokemonCard")
@@ -17,8 +18,7 @@ const fetchVariables: getPokemonVariable = {
 };
 const Home = () => {
     const [pokemonList, setPokemonList] = useState<Pokemons[]>([]);
-    const { data, error, loading, fetchMore, networkStatus } =
-        getPokemon(fetchVariables);
+    const { data, error, loading, fetchMore } = getPokemon(fetchVariables);
     const convertData = (newData: PokemonsResponse | undefined) => {
         if (newData) {
             const {
@@ -54,11 +54,11 @@ const Home = () => {
 
     if (error) return <p>Error {error.message}</p>;
 
-	if (loading) return <Loader />;
-	
+    if (loading) return <Loader />;
+
     return (
         <>
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<Spinner />}>
                 <div className="pokemon--container">
                     {pokemonList.map((pokemon, index) => {
                         if (pokemonList.length === index + 1) {

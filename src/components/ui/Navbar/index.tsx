@@ -7,7 +7,7 @@ import {
     NavMenu,
     NavLink,
 } from "./NavbarElement";
-import PokemonLogo from "@/assets/images/pokemon-logo-min.svg";
+import PokemonLogo from "@/assets/images/pokemon-logo-min.webp";
 export const Navbar = () => {
     const navRef = useRef<HTMLElement>(null);
 	let lastScrollY = 0;

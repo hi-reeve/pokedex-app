@@ -276,7 +276,7 @@ const PokemonDetail = () => {
                                 color={`var(--nature-${color})`}
                                 onClick={handleOnCatch}
                             >
-                                <FABCatchIcon src={fabCatchIconSrc} />
+                                <FABCatchIcon src={fabCatchIconSrc} alt="pokeball" />
                             </FloatingActionButton>
                         </FABContainer>,
                         body

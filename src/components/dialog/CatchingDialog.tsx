@@ -57,7 +57,7 @@ const CatchingDialog: React.FC<Props> = ({ isReleasing }) => {
             {createPortal(<CatchingDialogOverlay />, body)}
             {createPortal(
                 <CatchingDialogContainer>
-                    <CatchingIcon src={pokeballIcon} />
+                    <CatchingIcon src={pokeballIcon} alt="pokeball" />
                 </CatchingDialogContainer>,
                 body
             )}

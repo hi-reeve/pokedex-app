@@ -33,26 +33,26 @@
     --nature-unknown: #68a090;
     --nature-water: #6890f0;
 
-    --nature-bug-light: #C6D16E;
-    --nature-dark-light: #A29288;
-    --nature-dragon-light: #A27DFA;
-    --nature-electric-light: #FAE078;
-    --nature-fairy-light: #F4BDC9;
-    --nature-fighting-light: #D67873;
-    --nature-fire-light: #F5AC78;
-    --nature-flying-light: #C6B7F5;
-    --nature-ghost-light: #A292BC;
-    --nature-grass-light: #A7DB8D;
-    --nature-ground-light: #EBD69D;
-    --nature-ice-light: #BCE6E6;
-    --nature-normal-light: #C6C6A7;
-    --nature-poison-light: #C183C1;
-    --nature-psychic-light: #FA92B2;
-    --nature-rock-light: #D1C17D;
+    --nature-bug-light: #c6d16e;
+    --nature-dark-light: #a29288;
+    --nature-dragon-light: #a27dfa;
+    --nature-electric-light: #fae078;
+    --nature-fairy-light: #f4bdc9;
+    --nature-fighting-light: #d67873;
+    --nature-fire-light: #f5ac78;
+    --nature-flying-light: #c6b7f5;
+    --nature-ghost-light: #a292bc;
+    --nature-grass-light: #a7db8d;
+    --nature-ground-light: #ebd69d;
+    --nature-ice-light: #bce6e6;
+    --nature-normal-light: #c6c6a7;
+    --nature-poison-light: #c183c1;
+    --nature-psychic-light: #fa92b2;
+    --nature-rock-light: #d1c17d;
     --nature-shadow-light: #585858;
-    --nature-steel-light: #D1D1E0;
-    --nature-unknown-light: #9DC1B7;
-    --nature-water-light: #9DB7F5;
+    --nature-steel-light: #d1d1e0;
+    --nature-unknown-light: #9dc1b7;
+    --nature-water-light: #9db7f5;
 }
 body {
     font-size: 16px;
@@ -63,8 +63,4 @@ body {
 
 a {
     text-decoration: none;
-}
-
-.icon-back{
-	color : white;
 }

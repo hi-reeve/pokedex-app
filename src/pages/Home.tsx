@@ -1,34 +1,24 @@
-import { GET_POKEMONS } from "@/graphql/queries/getPokemons";
+import { getPokemon, getPokemonVariable } from "@/graphql/queries/getPokemons";
 import { Pokemons, PokemonsResponse } from "@/types/Pokemons";
-import { useQuery } from "@apollo/client";
-import React, {
-    Ref,
-    Suspense,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
+
+import React, { Suspense, useEffect, useState } from "react";
 import "@/pages/Home.css";
 import { Link } from "react-router-dom";
 import Loader from "@/components/Loader";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
+
 const PokemonCard = React.lazy(
     () => import("@/components/Pokemons/PokemonCard")
 );
 
-const fetchVariables = {
+const fetchVariables: getPokemonVariable = {
     limit: 50,
     offset: 0,
 };
 const Home = () => {
     const [pokemonList, setPokemonList] = useState<Pokemons[]>([]);
-    const { data, loading, error, fetchMore } = useQuery<PokemonsResponse>(
-        GET_POKEMONS,
-        {
-            variables: fetchVariables,
-        }
-    );
-
+    const { data, error, loading, fetchMore, networkStatus } =
+        getPokemon(fetchVariables);
     const convertData = (newData: PokemonsResponse | undefined) => {
         if (newData) {
             const {
@@ -48,9 +38,7 @@ const Home = () => {
 
         return () => {
             fetchVariables.offset = 0;
-            setPokemonList(() => {
-                return [];
-            });
+            setPokemonList([]);
         };
     }, [data]);
 
@@ -58,42 +46,16 @@ const Home = () => {
         fetchVariables.offset += fetchVariables.limit;
         const { data: fetchMoreData } = await fetchMore({
             variables: fetchVariables,
-            // @ts-ignore
-            updateQuery(prev, { fetchMoreResult }) {
-                if (!fetchMoreResult) return prev;
-
-                return {
-                    pokemons: {
-                        ...fetchMoreResult,
-                        results: [
-                            ...prev.pokemons.results,
-                            fetchMoreResult.pokemons.results,
-                        ],
-                    },
-                };
-            },
         });
         convertData(fetchMoreData);
     };
 
-    const observer = useRef<IntersectionObserver | null>();
-
-    const lastElemenRef = useCallback(element => {
-        if (observer.current) observer.current.disconnect();
-
-        observer.current = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting) {
-                handleFetchMore();
-            }
-        });
-
-        if (element) observer.current.observe(element);
-    }, []);
+    const { lastElemenRef } = useIntersectionObserver(handleFetchMore);
 
     if (error) return <p>Error {error.message}</p>;
 
-    if (loading) return <Loader />;
-
+	if (loading) return <Loader />;
+	
     return (
         <>
             <Suspense fallback={<Loader />}>

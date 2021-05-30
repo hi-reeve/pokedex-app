@@ -1,11 +1,13 @@
+import { PokemonsResponse } from "@/types/Pokemons";
+import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 
 export const GET_POKEMONS = gql`
     query pokemons($limit: Int, $offset: Int) {
         pokemons(limit: $limit, offset: $offset) {
             nextOffset
-			next
-			count
+            next
+            count
             status
             message
             results {
@@ -18,39 +20,21 @@ export const GET_POKEMONS = gql`
     }
 `;
 
-export const GET_POKEMON = gql`
-    query pokemon($name: String!) {
-        pokemon(name: $name) {
-            id
-            name
-			weight
-			height
-            sprites {
-                front_default
-				back_default
-            }
-            moves {
-                move {
-                    name
-                }
-            }
-            types {
-                type {
-                    name
-                }
-            }
-            abilities {
-                ability {
-                    name
-                }
-                is_hidden
-            }
-            stats {
-                base_stat
-                stat {
-                    name
-                }
-            }
-        }
-    }
-`;
+export type getPokemonVariable = {
+    limit: number;
+    offset: number;
+};
+export const getPokemon = (variable: getPokemonVariable) => {
+    const { data, loading, error, fetchMore, networkStatus } =
+        useQuery<PokemonsResponse>(GET_POKEMONS, {
+            variables: variable,
+        });
+
+    return {
+        data,
+        loading,
+        error,
+        fetchMore,
+        networkStatus,
+    };
+};

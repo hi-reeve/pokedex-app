@@ -9,7 +9,6 @@ type PokemonInfoContainerProps = {
 const PokemonInfoContainer = styled.div<PokemonInfoContainerProps>`
     display: flex;
     flex-direction: column;
-
     width: 50%;
     padding: 2rem;
     background: ${({ color }) => `var(--nature-${color}-light)`};
@@ -20,8 +19,8 @@ const PokemonInfoContainer = styled.div<PokemonInfoContainerProps>`
 `;
 
 const PokemonImage = styled.img`
-    max-width: 100%;
-    max-height: 300px;
+    max-width: 50%;
+    height: auto;
     @media screen and (max-width: 991px) {
         flex: 1;
     }
@@ -33,7 +32,7 @@ const PokemonDetailContainer = styled.div`
     padding-left: 1rem;
     @media screen and (max-width: 991px) {
         justify-content: center;
-		flex: 1;
+        flex: 1;
     }
 `;
 
@@ -85,15 +84,19 @@ type Props = {
     pokemon: Pokemon;
 };
 const PokemonDetailInfo: React.FC<Props> = ({ pokemon }) => {
-    const [currentImage, setCurrentImage] = useState(
+    const [currentImage, setCurrentImage] = useState<string>(
         pokemon.sprites.front_default
     );
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            if (currentImage === pokemon.sprites.front_default)
-                setCurrentImage(pokemon.sprites.back_default);
-            else setCurrentImage(pokemon.sprites.front_default);
+            if (currentImage === pokemon.sprites.front_default) {
+                if (pokemon.sprites.back_default) {
+                    setCurrentImage(pokemon.sprites.back_default);
+                }
+            } else {
+                setCurrentImage(pokemon.sprites.front_default);
+            }
 
             clearTimeout(timeout);
         }, 2000);

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import React, { ReactElement, useCallback, useState } from "react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/Button/Button";
 
 const TabGroup = styled.div`
     background: white;
@@ -15,7 +15,9 @@ const TabNameGroup = styled.div`
     justify-content: center;
     align-items: center;
 
-    box-shadow: var(--shadow);
+    @media screen and (max-width: 991px) {
+        box-shadow: var(--shadow);
+    }
 `;
 type TabNameProps = {
     isActive: boolean;

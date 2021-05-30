@@ -11,16 +11,13 @@ const PokemonContainer = styled.div`
     position: relative;
     box-shadow: var(--shadow);
     border-radius: var(--rounded);
-    @media screen and (max-width: 525px) {
-        max-height: 150px;
-        min-height: 100px;
-    }
+    height: 100%;
 `;
 
 const PokemonImage = styled.img`
     max-width: 50%;
-	width: 100%;
-	height: 100%;
+    width: 100%;
+    height: 100%;
     margin-left: auto;
 `;
 
@@ -58,7 +55,13 @@ const PokemonCard: React.FC<Props> = ({ pokemon }) => {
                 <PokemonName>{pokemon.name}</PokemonName>
                 <PokemonOwned>Owned : 0</PokemonOwned>
             </PokemonInfoContainer>
-			<PokemonImage src={pokemon.image} alt={pokemon.name} loading="lazy" width="100%" height="100%" />
+            <PokemonImage
+                src={pokemon.image}
+                alt={pokemon.name}
+                loading="lazy"
+                width="100%"
+                height="100%"
+            />
         </PokemonContainer>
     );
 };

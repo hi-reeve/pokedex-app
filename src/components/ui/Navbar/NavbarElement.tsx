@@ -1,4 +1,4 @@
-import { Button } from "@/components/Button/Button";
+import { FABContainer } from "@/components/Button/FloatingActionButton";
 import styled from "@emotion/styled";
 import { NavLink as RouterLink } from "react-router-dom";
 export const NavContainer = styled.nav`
@@ -6,32 +6,37 @@ export const NavContainer = styled.nav`
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 100%;
     padding: 1rem 2rem;
     box-shadow: var(--shadow);
     position: relative;
-	transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     z-index: 99;
     @media screen and (max-width: 991px) {
         padding: 1rem;
     }
-`;
 
-type NavButtonBackProps = {
-    isVisible: boolean;
-};
-export const NavButtonBack = styled(Button)<NavButtonBackProps>`
-    display: none;
-    @media screen and (max-width: 991px) {
-        display: flex;
+    &.scrolled-down {
+        transform: translateY(-90px);
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+    &.scrolled-up {
+        transform: translateY(0);
+		position: fixed;
+        top: 0;
+        left: 0;
     }
 `;
+
 export const NavLogoContainer = styled.div`
     max-width: 8%;
     width: 100%;
     height: 100%;
+
     @media screen and (max-width: 991px) {
         max-width: 15%;
-        margin-left: 1rem;
     }
     @media screen and (max-width: 525px) {
         max-width: 25%;
@@ -68,7 +73,9 @@ export const NavMenu = styled.div`
     display: flex;
     flex-direction: row;
     margin-left: auto;
-
+    @media screen and (max-width: 991px) {
+        display: none;
+    }
 `;
 
 export const NavLink = styled(RouterLink)`
@@ -83,5 +90,14 @@ export const NavLink = styled(RouterLink)`
     }
     @media screen and (max-width: 525px) {
         padding: 0.75rem 2rem;
+    }
+`;
+
+export const NavMenuFABContainer = styled(FABContainer)`
+    display: none;
+    @media screen and (max-width: 991px) {
+        right: 1rem;
+        bottom: 1rem;
+        display: flex;
     }
 `;

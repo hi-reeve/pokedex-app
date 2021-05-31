@@ -1,6 +1,11 @@
 import React, { useContext, useRef } from "react";
 import { Navbar } from "./components/ui/Navbar";
-import { Switch, HashRouter as Router, Route } from "react-router-dom";
+import {
+    Switch,
+    HashRouter as Router,
+    Route,
+    useHistory,
+} from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import MyPokemon from "./pages/MyPokemon";
@@ -9,10 +14,18 @@ import { ToastContext } from "./context/ToastContext";
 import { createPortal } from "react-dom";
 import { SimpleToast } from "./components/toast/Toast";
 import { CSSTransition } from "react-transition-group";
+import useDeviceType from "./hooks/useDeviceType";
+import {
+    FABContainer,
+    FABIcon,
+    FloatingActionButton,
+} from "./components/Button/FloatingActionButton";
+
 function App() {
     const body = document.querySelector("body") as HTMLBodyElement;
     const toastContext = useContext(ToastContext);
     const nodeRef = useRef<HTMLDivElement>(null);
+    const isMobile = useDeviceType(991);
     return (
         <div className="app">
             <Router>
@@ -34,8 +47,8 @@ function App() {
                     in={toastContext.visible}
                     classNames="toast"
                     timeout={300}
-					nodeRef={nodeRef}
-					unmountOnExit
+                    nodeRef={nodeRef}
+                    unmountOnExit
                 >
                     <SimpleToast
                         ref={nodeRef}

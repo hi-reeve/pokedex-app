@@ -2,12 +2,12 @@ import styled from "@emotion/styled";
 
 import { Button } from "./Button";
 
-type CircleButtonProps = {
+type FloatingActionButtonProps = {
     size?: string;
     color?: string;
 };
-export const FloatingActionButton = styled(Button)<CircleButtonProps>`
-    z-index: 991;
+export const FloatingActionButton = styled(Button)<FloatingActionButtonProps>`
+    z-index: 1000;
     border-radius: 50px;
     width: ${({ size }) => size ?? "3rem"};
     height: ${({ size }) => size ?? "3rem"};
@@ -16,4 +16,13 @@ export const FloatingActionButton = styled(Button)<CircleButtonProps>`
     justify-content: center;
     align-items: center;
     box-shadow: var(--shadow);
+`;
+
+export const FABContainer = styled.div`
+    position: fixed;
+`;
+
+export const FABIcon = styled.img`
+    width: 1.5rem;
+    height: 1.5rem;
 `;

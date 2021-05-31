@@ -5,13 +5,17 @@ import { useParams } from "react-router";
 import { Tab, Tabs } from "@/components/ui/Tab/Tab";
 import Loader from "@/components/Loader";
 import styled from "@emotion/styled";
-import { FloatingActionButton } from "@/components/Button/FloatingActionButton";
+import {
+    FABContainer,
+    FABIcon,
+    FloatingActionButton,
+} from "@/components/Button/FloatingActionButton";
 import { createPortal } from "react-dom";
 import { DialogButton } from "@/components/dialog/Dialog";
 import { InputError, InputText, InputWrapper } from "@/components/input/Input";
 import { addNewPokemon, checkExistingNickname } from "@/db/pokemon";
 import { ToastContext } from "@/context/ToastContext";
-import Spinner  from "@/components/Loader/Spinner";
+import Spinner from "@/components/Loader/Spinner";
 
 const CatchingDialog = React.lazy(
     () => import("@/components/dialog/CatchingDialog")
@@ -43,25 +47,8 @@ const PokemonDetailContainer = styled.div`
     @media screen and (max-width: 991px) {
         flex-direction: column;
         min-height: auto;
+		padding-bottom: 3rem;
     }
-`;
-
-const FABContainer = styled.div`
-    position: fixed;
-    left: 50%;
-    bottom: 1rem;
-    transform: translateX(-50%);
-    @media screen and (max-width: 991px) {
-        right: 1rem;
-        bottom: 1rem;
-        left: inherit;
-        transform: translateX(x);
-    }
-`;
-
-const FABCatchIcon = styled.img`
-    width: 1.5rem;
-    height: 1.5rem;
 `;
 
 type NicknameInputProps = {
@@ -92,6 +79,16 @@ const NickNameInput = styled(InputText)<NicknameInputProps>`
     }
 `;
 
+const FABCatchContainer = styled(FABContainer)`
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 1rem;
+    @media screen and (max-width: 991px) {
+        right: 5rem;
+        left: inherit;
+        transform: translateX(0);
+    }
+`;
 const PokemonDetail = () => {
     const body = document.querySelector("body ") as HTMLBodyElement;
     const toastContext = useContext(ToastContext);
@@ -268,7 +265,7 @@ const PokemonDetail = () => {
                         </Tabs>
                     </PokemonDetailContainer>
                     {createPortal(
-                        <FABContainer>
+                        <FABCatchContainer>
                             <FloatingActionButton
                                 onMouseOver={handleOnMouseOver}
                                 onMouseLeave={handleOnMouseLeave}
@@ -276,9 +273,9 @@ const PokemonDetail = () => {
                                 color={`var(--nature-${color})`}
                                 onClick={handleOnCatch}
                             >
-                                <FABCatchIcon src={fabCatchIconSrc} alt="pokeball" />
+                                <FABIcon src={fabCatchIconSrc} alt="pokeball" />
                             </FloatingActionButton>
-                        </FABContainer>,
+                        </FABCatchContainer>,
                         body
                     )}
                     {catchDialogVisible && <CatchingDialog />}

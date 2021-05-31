@@ -1,30 +1,44 @@
 import React, { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import {
     NavContainer,
     NavLogoContainer,
     NavLogo,
     NavMenu,
     NavLink,
+    NavMenuFABContainer,
 } from "./NavbarElement";
 import PokemonLogo from "@/assets/images/pokemon-logo-min.webp";
+import { Button } from "@/components/Button/Button";
+import IconArrowLeft from "@/components/icon/IconArrowLeft";
+import {
+    FABIcon,
+    FloatingActionButton,
+} from "@/components/Button/FloatingActionButton";
+import { createPortal } from "react-dom";
+import useDeviceType from "@/hooks/useDeviceType";
+
 export const Navbar = () => {
     const navRef = useRef<HTMLElement>(null);
-	let lastScrollY = 0;
-	
+    const location = useLocation();
+    const history = useHistory();
+    const body = document.querySelector("body") as HTMLBodyElement;
+    let lastScrollY = 0;
+    const isMobile = useDeviceType(991);
     const handleOnScroll = () => {
         const currentScrollY = window.scrollY;
-        navRef.current!.style.position = "fixed";
-        navRef.current!.style.top = "0";
-		navRef.current!.style.left = "0";
-		
-        if (window.pageYOffset > 10 && currentScrollY > lastScrollY) {
-            navRef.current!.style.transform = "translateY(-90px)";
-        } else {
-            navRef.current!.style.transform = "translateY(0)";
+        if (navRef.current) {
+            if (window.pageYOffset > 200 && currentScrollY > lastScrollY) {
+                navRef.current.classList.add("scrolled-down");
+                navRef.current.classList.remove("scrolled-up");
+            } else {
+                navRef.current.classList.remove("scrolled-down");
+                navRef.current.classList.add("scrolled-up");
 
-            if (window.pageYOffset === 0) {
-                navRef.current!.style.position = "relative";
+                if (window.pageYOffset === 0) {
+                    navRef.current.classList.remove("scrolled-up");
+                    navRef.current.classList.remove("scrolled-down");
+                }
             }
         }
 
@@ -37,20 +51,49 @@ export const Navbar = () => {
         };
     }, []);
     return (
-        <NavContainer ref={navRef}>
-            <NavLogoContainer>
-                <Link to="/">
-                    <NavLogo
-                        src={PokemonLogo}
-                        alt="Nav Logo"
-                        width="100%"
-                        height="100%"
-                    />
-                </Link>
-            </NavLogoContainer>
-            <NavMenu>
-                <NavLink to="/my-pokemon">My Pokemon</NavLink>
-            </NavMenu>
-        </NavContainer>
+        <>
+            <NavContainer ref={navRef}>
+                {location.pathname !== "/" && (
+                    <Button onClick={() => history.push("/")}>
+                        <IconArrowLeft width="24px" height="24px" />
+                    </Button>
+                )}
+                <NavLogoContainer
+                    style={{
+                        marginLeft: location.pathname !== "/" ? "1rem" : "",
+                    }}
+                >
+                    <Link to="/">
+                        <NavLogo
+                            src={PokemonLogo}
+                            alt="Nav Logo"
+                            width="100%"
+                            height="100%"
+                        />
+                    </Link>
+                </NavLogoContainer>
+                <NavMenu>
+                    <NavLink to="/my-pokemon">My Pokemon</NavLink>
+                </NavMenu>
+            </NavContainer>
+            {createPortal(
+                <NavMenuFABContainer>
+                    <FloatingActionButton
+                        color="var(--nature-water)"
+                        onClick={() => history.push("/my-pokemon")}
+                    >
+                        <FABIcon src="/icon/bag-icon.svg" />
+                    </FloatingActionButton>
+                    {/* <FloatingActionButton
+                        color="var(--nature-water)"
+                        style={{ marginLeft: "1rem" }}
+                        onClick={() => history.push("/")}
+                    >
+                        <FABIcon src="/icon/pokemon-list-icon.svg" />
+                    </FloatingActionButton> */}
+                </NavMenuFABContainer>,
+                body
+            )}
+        </>
     );
 };

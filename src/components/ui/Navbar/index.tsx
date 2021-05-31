@@ -23,8 +23,8 @@ export const Navbar = () => {
     const location = useLocation();
     const history = useHistory();
     const body = document.querySelector("body") as HTMLBodyElement;
-	let lastScrollY = 0;
-	
+    let lastScrollY = 0;
+
     const handleOnScroll = () => {
         const currentScrollY = window.scrollY;
         if (navRef.current) {
@@ -54,7 +54,7 @@ export const Navbar = () => {
         <>
             <NavContainer ref={navRef}>
                 {location.pathname !== "/" && (
-                    <Button onClick={() => history.push("/")}>
+                    <Button aria-label="Button back to home" onClick={() => history.push("/")}>
                         <IconArrowLeft width="24px" height="24px" />
                     </Button>
                 )}
@@ -81,8 +81,9 @@ export const Navbar = () => {
                     <FloatingActionButton
                         color="var(--nature-water)"
                         onClick={() => history.push("/my-pokemon")}
+                        aria-label="button my pokemon list"
                     >
-                        <FABIcon src="/icon/bag-icon.svg" />
+                        <FABIcon src="/icon/bag-icon.svg" alt="bag-icon" />
                     </FloatingActionButton>
                 </NavMenuFABContainer>,
                 body

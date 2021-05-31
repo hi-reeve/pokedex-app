@@ -101,3 +101,7 @@ export const NavMenuFABContainer = styled(FABContainer)`
         display: flex;
     }
 `;
+
+export const NavSearch = styled.input`
+	
+`

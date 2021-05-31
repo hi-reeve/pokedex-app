@@ -47,7 +47,7 @@ const PokemonMoves: React.FC<Props> = ({ color, moves }) => {
 
     return (
         <AboutContainer>
-            <AboutTitle color={color}>Move List</AboutTitle>
+            <AboutTitle color={color}>Move List Table</AboutTitle>
             <AboutWrapper>
                 <PokemonMoveBadgeWrapper>
                     {arrayMove.map(moveName => (

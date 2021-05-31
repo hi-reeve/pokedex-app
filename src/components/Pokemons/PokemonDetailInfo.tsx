@@ -167,7 +167,7 @@ const PokemonDetailInfo: React.FC<Props> = ({ pokemon, handleOnCatch }) => {
                         Owned : {ownedNickname ? ownedNickname.length : 0}
                     </PokemonOwned>
                     {!isTablet && (
-                        <ReleaseButton bgColor={color} onClick={handleOnCatch}>
+                        <ReleaseButton aria-label="Button catch this pokemon" bgColor={color} onClick={handleOnCatch}>
                             <ReleaseIcon
                                 src="/icon/pokeball.svg"
                                 alt="pokeball catch"

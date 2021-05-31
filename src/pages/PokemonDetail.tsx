@@ -203,8 +203,12 @@ const PokemonDetail = () => {
                         <InputError>{nickNameInputError}</InputError>
                     )}
                 </InputWrapper>
-                <DialogButton type="submit" bgColor={`var(--nature-${color})`}>
-                    Confirm
+                <DialogButton
+                    aria-label="Button save nickname"
+                    type="submit"
+                    bgColor={`var(--nature-${color})`}
+                >
+                    Save pokemon
                 </DialogButton>
             </form>
         </>
@@ -215,6 +219,7 @@ const PokemonDetail = () => {
         <>
             <p>Oh no! {pokemon?.name} got away!</p>
             <DialogButton
+                aria-label="Button confirm failed catch pokemon"
                 autoFocus
                 bgColor={`var(--nature-${color})`}
                 onClick={() => setAfterCatchDialogVisible(false)}

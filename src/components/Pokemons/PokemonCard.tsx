@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db, IPokemonDb } from "@/db";
 import { useFormatPokemonId, useToCapitalize } from "@/hooks/useFormatter";
-import { Button } from "../Button/Button";
 import { releasePokemon } from "@/db/pokemon";
 import { DialogButton } from "../dialog/Dialog";
 import { ToastContext } from "@/context/ToastContext";
@@ -122,6 +121,7 @@ const PokemonCard: React.FC<Props> = ({ pokemon, isMyPokemon }) => {
         <>
             <p>Are you sure want to release this pokemon?</p>
             <DialogButton
+                aria-label="Button release pokemon dialog "
                 onClick={e => {
                     e.preventDefault();
                     handlePokemonRelease();
@@ -131,6 +131,7 @@ const PokemonCard: React.FC<Props> = ({ pokemon, isMyPokemon }) => {
                 Release
             </DialogButton>
             <DialogButton
+                aria-label="Button cancel dialog release"
                 onClick={e => {
                     e.preventDefault();
                     setDialogConfirmVisible(false);
@@ -175,6 +176,7 @@ const PokemonCard: React.FC<Props> = ({ pokemon, isMyPokemon }) => {
                     )}
                     {isMyPokemon && (
                         <ReleaseButton
+                            aria-label="Button release pokemon"
                             onClick={e =>
                                 handleDialogConfirm(
                                     e,

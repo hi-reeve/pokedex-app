@@ -1,3 +1,4 @@
+import { useFormatMove } from "@/hooks/useFormatter";
 import { PokemonMove } from "@/types/Pokemons";
 import styled from "@emotion/styled";
 import React from "react";
@@ -17,8 +18,8 @@ const PokemonMoveBadgeWrapper = styled.div`
     grid-template-columns: repeat(4, minmax(0, 1fr));
     place-items: center;
     vertical-align: middle;
-    gap: 1rem;
     width: 100%;
+    gap: 1px;
     @media screen and (max-width: 991px) {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
@@ -37,19 +38,21 @@ const PokemonMoveBadge = styled.div`
     height: 40px;
     padding: 0.5rem;
     /* box-shadow: var(--shadow); */
-	border: 1px solid hsla(0,0%,0%,0.5);
-	border-radius: var(--rounded);
+    border: 1px solid hsla(0, 0%, 0%, 0.5);
     font-size: 0.7rem;
 `;
+
 const PokemonMoves: React.FC<Props> = ({ color, moves }) => {
+    const arrayMove = moves.map(move => move.move.name).sort();
+
     return (
         <AboutContainer>
             <AboutTitle color={color}>Move List</AboutTitle>
             <AboutWrapper>
                 <PokemonMoveBadgeWrapper>
-                    {moves.map(move => (
-                        <PokemonMoveBadge key={move.move.name}>
-                            {move.move.name}
+                    {arrayMove.map(moveName => (
+                        <PokemonMoveBadge key={moveName}>
+                            {useFormatMove(moveName)}
                         </PokemonMoveBadge>
                     ))}
                 </PokemonMoveBadgeWrapper>

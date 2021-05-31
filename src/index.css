@@ -54,7 +54,7 @@
     --nature-unknown-light: #9dc1b7;
     --nature-water-light: #9db7f5;
 
-    --default-transition: all 0.3s ease-in-out;
+    --transition-default: all 0.3s ease-in-out;
 }
 body {
     font-size: 16px;
@@ -72,18 +72,18 @@ a {
 }
 .toast-enter-active {
     opacity: 1;
-    transition: var(--default-transition);
-    -o-transition: var(--default-transition);
-    -moz-transition: var(--default-transition);
-    -webkit-transition: var(--default-transition);
+    transition: var(--transition-default);
+    -o-transition: var(--transition-default);
+    -moz-transition: var(--transition-default);
+    -webkit-transition: var(--transition-default);
 }
 .toast-exit {
     opacity: 1;
 }
 .toast-exit-active {
     opacity: 0;
-    transition: var(--default-transition);
-    -o-transition: var(--default-transition);
-    -moz-transition: var(--default-transition);
-    -webkit-transition: var(--default-transition);
+    transition: var(--transition-default);
+    -o-transition: var(--transition-default);
+    -moz-transition: var(--transition-default);
+    -webkit-transition: var(--transition-default);
 }

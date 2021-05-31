@@ -25,7 +25,6 @@ function App() {
     const body = document.querySelector("body") as HTMLBodyElement;
     const toastContext = useContext(ToastContext);
     const nodeRef = useRef<HTMLDivElement>(null);
-    const isMobile = useDeviceType(991);
     return (
         <div className="app">
             <Router>

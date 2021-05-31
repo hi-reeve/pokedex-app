@@ -1,4 +1,10 @@
-import React, { Suspense, useContext, useEffect, useState } from "react";
+import React, {
+    Suspense,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { getPokemonByName } from "@/graphql/queries/getPokemonByName";
 import { Pokemon } from "@/types/Pokemons";
 import { useParams } from "react-router";
@@ -16,6 +22,7 @@ import { InputError, InputText, InputWrapper } from "@/components/input/Input";
 import { addNewPokemon, checkExistingNickname } from "@/db/pokemon";
 import { ToastContext } from "@/context/ToastContext";
 import Spinner from "@/components/Loader/Spinner";
+import useDeviceType from "@/hooks/useDeviceType";
 
 const CatchingDialog = React.lazy(
     () => import("@/components/dialog/CatchingDialog")
@@ -47,7 +54,7 @@ const PokemonDetailContainer = styled.div`
     @media screen and (max-width: 991px) {
         flex-direction: column;
         min-height: auto;
-		padding-bottom: 3rem;
+        padding-bottom: 3rem;
     }
 `;
 
@@ -80,14 +87,8 @@ const NickNameInput = styled(InputText)<NicknameInputProps>`
 `;
 
 const FABCatchContainer = styled(FABContainer)`
-    left: 50%;
-    transform: translateX(-50%);
+    right: 5rem;
     bottom: 1rem;
-    @media screen and (max-width: 991px) {
-        right: 5rem;
-        left: inherit;
-        transform: translateX(0);
-    }
 `;
 const PokemonDetail = () => {
     const body = document.querySelector("body ") as HTMLBodyElement;
@@ -110,6 +111,7 @@ const PokemonDetail = () => {
     const [nickname, setNickname] = useState<string>("");
     const [nickNameInputError, setNicknameInputError] =
         useState<string | null>(null);
+    const { isTablet } = useDeviceType();
 
     // define pokemon color
     let color = "";
@@ -177,6 +179,7 @@ const PokemonDetail = () => {
         setNickname(event.target.value);
     };
 
+    const nickInputRef = useRef<HTMLInputElement>(null);
     // success catch content
     const successCatchDialogContent = (
         <>
@@ -187,12 +190,14 @@ const PokemonDetail = () => {
             <form onSubmit={handleSaveNewCatchedPokemon}>
                 <InputWrapper>
                     <NickNameInput
+                        autoFocus
                         color={color}
                         type="text"
                         placeholder="Nickname"
                         onChange={handleInputNickname}
                         value={nickname}
                         invalid={nickNameInputError !== null}
+                        ref={nickInputRef}
                     />
                     {nickNameInputError !== null && (
                         <InputError>{nickNameInputError}</InputError>
@@ -210,6 +215,7 @@ const PokemonDetail = () => {
         <>
             <p>Oh no! {pokemon?.name} got away!</p>
             <DialogButton
+                autoFocus
                 bgColor={`var(--nature-${color})`}
                 onClick={() => setAfterCatchDialogVisible(false)}
             >
@@ -226,7 +232,8 @@ const PokemonDetail = () => {
     };
 
     // on click catch button
-    const handleOnCatch = () => {
+    const handleOnCatch = (e: React.MouseEvent) => {
+        (e.target as HTMLButtonElement).blur();
         setIsCatched(Math.floor(Math.random() * 2));
         setCatchDialogVisible(true);
         const catchingTimeout = setTimeout(() => {
@@ -247,7 +254,10 @@ const PokemonDetail = () => {
                     fallback={<Spinner color={`var(--nature-${color})`} />}
                 >
                     <PokemonDetailContainer>
-                        <PokemonDetailInfo pokemon={pokemon} />
+                        <PokemonDetailInfo
+                            handleOnCatch={handleOnCatch}
+                            pokemon={pokemon}
+                        />
                         <Tabs>
                             <Tab label="about" tabName="About">
                                 <PokemonAbout pokemon={pokemon} />
@@ -264,20 +274,24 @@ const PokemonDetail = () => {
                             </Tab>
                         </Tabs>
                     </PokemonDetailContainer>
-                    {createPortal(
-                        <FABCatchContainer>
-                            <FloatingActionButton
-                                onMouseOver={handleOnMouseOver}
-                                onMouseLeave={handleOnMouseLeave}
-                                size="3rem"
-                                color={`var(--nature-${color})`}
-                                onClick={handleOnCatch}
-                            >
-                                <FABIcon src={fabCatchIconSrc} alt="pokeball" />
-                            </FloatingActionButton>
-                        </FABCatchContainer>,
-                        body
-                    )}
+                    {isTablet &&
+                        createPortal(
+                            <FABCatchContainer>
+                                <FloatingActionButton
+                                    onMouseOver={handleOnMouseOver}
+                                    onMouseLeave={handleOnMouseLeave}
+                                    size="3rem"
+                                    color={`var(--nature-${color})`}
+                                    onClick={handleOnCatch}
+                                >
+                                    <FABIcon
+                                        src={fabCatchIconSrc}
+                                        alt="pokeball"
+                                    />
+                                </FloatingActionButton>
+                            </FABCatchContainer>,
+                            body
+                        )}
                     {catchDialogVisible && <CatchingDialog />}
                     {afterCatchDialogVisible && (
                         <AfterCatchDialog>

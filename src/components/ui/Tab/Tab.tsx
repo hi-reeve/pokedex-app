@@ -27,6 +27,22 @@ const TabName = styled(Button)<TabNameProps>`
     opacity: ${({ isActive }) => (isActive ? 1 : 0.5)};
     font-size: 1rem;
     padding: 1rem 2rem;
+    position: relative;
+    &:first-of-type {
+        &:after {
+            position: absolute;
+            content: "";
+            display: block;
+            height: 3px;
+            width: 100%;
+            top: 100%;
+            left: 0;
+            transform: ${({ isActive }) =>
+                isActive ? "translateX(0)" : "translateX(100%)"};
+            transition: var(--transition-default);
+            background-color: black;
+        }
+    }
 `;
 
 const TabContent = styled.div`

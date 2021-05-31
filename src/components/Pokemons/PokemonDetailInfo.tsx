@@ -4,7 +4,13 @@ import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/db";
-import { useFormatPokemonId } from "@/hooks/useFormatter";
+import { useFormatPokemonId, useToCapitalize } from "@/hooks/useFormatter";
+import {
+    ReleaseButton,
+    ReleaseButtonText,
+    ReleaseIcon,
+} from "../Button/ReleaseButton";
+import useDeviceType from "@/hooks/useDeviceType";
 type PokemonInfoContainerProps = {
     color: string;
 };
@@ -23,6 +29,7 @@ const PokemonInfoContainer = styled.div<PokemonInfoContainerProps>`
 const PokemonImage = styled.img`
     max-width: 50%;
     height: auto;
+    margin-bottom: 1rem;
     @media screen and (max-width: 991px) {
         flex: 1;
     }
@@ -47,8 +54,9 @@ const PokemonId = styled.h6`
     color: white;
 `;
 const PokemonOwned = styled.p`
-    font-size: 0.7rem;
+    font-size: 1rem;
     margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
     color: white;
     font-weight: bold;
 `;
@@ -61,11 +69,12 @@ const PokemonNature = styled.div<PokemonNatureProps>`
     display: flex;
     justify-content: center;
     align-items: center;
-    background: ${({ type }) => `var(--nature-${type})`};
+    /* background: ${({ type }) => `var(--nature-${type})`}; */
     padding: 0.25rem 0.5rem;
     margin: 0.5rem 0.25rem 0.5rem 0;
     border-radius: var(--rounded);
-    /* box-shadow: var(--shadow); */
+    /* box-shadow: var(--shadow);
+    cursor: pointer; */
 `;
 const PokemonNatureIcon = styled.img`
     width: 24px;
@@ -84,15 +93,19 @@ const PokemonNatureName = styled.div`
 
 type Props = {
     pokemon: Pokemon;
+    handleOnCatch: (e: React.MouseEvent) => void;
 };
-const PokemonDetailInfo: React.FC<Props> = ({ pokemon }) => {
+
+const PokemonDetailInfo: React.FC<Props> = ({ pokemon, handleOnCatch }) => {
     const [currentImage, setCurrentImage] = useState<string>(
         pokemon.sprites.front_default
     );
 
-    const ownedCount = useLiveQuery(() =>
-        db.pokemon.where("name").equals(pokemon.name).count()
+    const ownedNickname = useLiveQuery(() =>
+        db.pokemon.where("name").equals(pokemon.name).toArray()
     );
+
+    const { isTablet } = useDeviceType();
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -110,19 +123,26 @@ const PokemonDetailInfo: React.FC<Props> = ({ pokemon }) => {
             clearTimeout(timeout);
         };
     }, [currentImage]);
+    const color = pokemon.types[0].type.name;
     return (
         <>
-            <PokemonInfoContainer color={pokemon.types[0].type.name}>
+            <PokemonInfoContainer color={color}>
                 <PokemonImage
-                    src={currentImage}
+                    src={currentImage ?? "/images/no-pokemon.webp"}
                     alt={pokemon.name}
                     loading="lazy"
                     width="100%"
                     height="100%"
+                    onError={(
+                        e: React.SyntheticEvent<HTMLImageElement, Event>
+                    ) => {
+                        (e.target as HTMLImageElement).src =
+                            "/images/no-pokemon.webp";
+                    }}
                 />
                 <PokemonDetailContainer>
                     <PokemonId>{useFormatPokemonId(pokemon.id)}</PokemonId>
-                    <PokemonName>{pokemon.name}</PokemonName>
+                    <PokemonName>{useToCapitalize(pokemon.name)}</PokemonName>
                     <PokemonNatureContainer>
                         {pokemon.types.map(type => {
                             return (
@@ -143,7 +163,20 @@ const PokemonDetailInfo: React.FC<Props> = ({ pokemon }) => {
                             );
                         })}
                     </PokemonNatureContainer>
-                    <PokemonOwned>Owned : {ownedCount}</PokemonOwned>
+                    <PokemonOwned>
+                        Owned : {ownedNickname ? ownedNickname.length : 0}
+                    </PokemonOwned>
+                    {!isTablet && (
+                        <ReleaseButton bgColor={color} onClick={handleOnCatch}>
+                            <ReleaseIcon
+                                src="/icon/pokeball.svg"
+                                alt="pokeball catch"
+                            />
+                            <ReleaseButtonText>
+                                Catch this pokemon
+                            </ReleaseButtonText>
+                        </ReleaseButton>
+                    )}
                 </PokemonDetailContainer>
             </PokemonInfoContainer>
         </>

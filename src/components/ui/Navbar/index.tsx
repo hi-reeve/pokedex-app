@@ -23,8 +23,8 @@ export const Navbar = () => {
     const location = useLocation();
     const history = useHistory();
     const body = document.querySelector("body") as HTMLBodyElement;
-    let lastScrollY = 0;
-    const isMobile = useDeviceType(991);
+	let lastScrollY = 0;
+	
     const handleOnScroll = () => {
         const currentScrollY = window.scrollY;
         if (navRef.current) {
@@ -84,13 +84,6 @@ export const Navbar = () => {
                     >
                         <FABIcon src="/icon/bag-icon.svg" />
                     </FloatingActionButton>
-                    {/* <FloatingActionButton
-                        color="var(--nature-water)"
-                        style={{ marginLeft: "1rem" }}
-                        onClick={() => history.push("/")}
-                    >
-                        <FABIcon src="/icon/pokemon-list-icon.svg" />
-                    </FloatingActionButton> */}
                 </NavMenuFABContainer>,
                 body
             )}

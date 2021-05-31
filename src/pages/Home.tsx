@@ -13,7 +13,7 @@ const PokemonCard = React.lazy(
 );
 
 const fetchVariables: getPokemonVariable = {
-    limit: 50,
+    limit: 20,
     offset: 0,
 };
 const Home = () => {

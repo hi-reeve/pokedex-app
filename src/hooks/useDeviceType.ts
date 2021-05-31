@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-export default function useDeviceType(widthInput: number) {
+export default function useDeviceType() {
     const [width, setWidth] = useState<number>(window.innerWidth);
 
     const handleChangeWindowResize = () => {
@@ -12,5 +12,8 @@ export default function useDeviceType(widthInput: number) {
         };
     }, []);
 
-    return width <= widthInput;
+    return {
+        isMobile: width <= 525,
+        isTablet: width <= 991,
+    };
 }

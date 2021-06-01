@@ -9,7 +9,11 @@ class PokemonAppDB extends Dexie {
         super("MyPokemon");
         this.version(1).stores({
             pokemon: "++dbid,id,name,image,nickname",
-        });
+		});
+		
+		this.version(2).stores({
+			pokemon : "++dbid,id,name,image,url,nickname"
+		})
         this.pokemon = this.table("pokemon");
     }
 }

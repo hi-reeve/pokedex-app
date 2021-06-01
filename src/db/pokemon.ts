@@ -6,6 +6,7 @@ export const addNewPokemon = async (payload: PokemonsWithNickname) => {
         id: payload.id,
         name: payload.name,
         nickname: payload.nickname,
+		url : "",
         image: payload.image,
     });
 };

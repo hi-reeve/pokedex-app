@@ -9,6 +9,7 @@ const SimpleDialogOverlay = styled(DialogOverlay)`
 const SimpleDialogContainer = styled(DialogContainer)`
     background-color: white;
     padding: 2rem;
+	overflow: auto;
     @media screen and (max-width: 525px) {
         width: 80vw;
     }

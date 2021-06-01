@@ -4,7 +4,6 @@ import {
     Switch,
     HashRouter as Router,
     Route,
-    useHistory,
 } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
@@ -14,12 +13,6 @@ import { ToastContext } from "./context/ToastContext";
 import { createPortal } from "react-dom";
 import { SimpleToast } from "./components/toast/Toast";
 import { CSSTransition } from "react-transition-group";
-import useDeviceType from "./hooks/useDeviceType";
-import {
-    FABContainer,
-    FABIcon,
-    FloatingActionButton,
-} from "./components/Button/FloatingActionButton";
 
 function App() {
     const body = document.querySelector("body") as HTMLBodyElement;
@@ -29,17 +22,19 @@ function App() {
         <div className="app">
             <Router>
                 <Navbar />
-                <Switch>
-                    <Route exact path="/">
-                        <Home />
-                    </Route>
-                    <Route exact path="/pokemon/:name">
-                        <PokemonDetail />
-                    </Route>
-                    <Route exact path="/my-pokemon">
-                        <MyPokemon />
-                    </Route>
-                </Switch>
+                <main>
+                    <Switch>
+                        <Route exact path="/">
+                            <Home />
+                        </Route>
+                        <Route exact path="/pokemon/:name">
+                            <PokemonDetail />
+                        </Route>
+                        <Route exact path="/my-pokemon">
+                            <MyPokemon />
+                        </Route>
+                    </Switch>
+                </main>
             </Router>
             {createPortal(
                 <CSSTransition

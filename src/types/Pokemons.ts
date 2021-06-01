@@ -2,6 +2,8 @@ export interface Pokemons {
     id: number;
     name: string;
     image: string;
+    url: string;
+    type?: PokemonType[];
 }
 export interface PokemonsWithNickname extends Pokemons {
     nickname: string;
@@ -27,6 +29,29 @@ export type PokemonType = {
 };
 export type PokemonMove = {
     move: {
+        name: string;
+        url: string;
+    };
+};
+
+export type PokemonMoveDetail = {
+    name: string;
+    accuracy: number;
+    power: number;
+    pp: number;
+	damage_class: {
+		name: string;
+	}
+    effect_entries: {
+        effect: string;
+    }[];
+    meta: {
+        category: {
+            name: string;
+        };
+        crit_rate: number;
+    };
+    type: {
         name: string;
     };
 };

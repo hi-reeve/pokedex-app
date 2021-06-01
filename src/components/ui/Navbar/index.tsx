@@ -35,10 +35,10 @@ export const Navbar = () => {
                 navRef.current.classList.remove("scrolled-down");
                 navRef.current.classList.add("scrolled-up");
 
-                if (window.pageYOffset === 0) {
-                    navRef.current.classList.remove("scrolled-up");
-                    navRef.current.classList.remove("scrolled-down");
-                }
+                // if (window.pageYOffset === 0) {
+                //     navRef.current.classList.remove("scrolled-up");
+                //     navRef.current.classList.remove("scrolled-down");
+                // }
             }
         }
 

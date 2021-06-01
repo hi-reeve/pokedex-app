@@ -15,5 +15,6 @@ export default function useDeviceType() {
     return {
         isMobile: width <= 525,
         isTablet: width <= 991,
+        isDesktop: width >= 992,
     };
 }

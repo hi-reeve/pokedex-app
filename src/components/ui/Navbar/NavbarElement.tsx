@@ -9,7 +9,9 @@ export const NavContainer = styled.nav`
     width: 100%;
     padding: 1rem 2rem;
     box-shadow: var(--shadow);
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
     transition: all 0.3s ease-in-out;
     z-index: 99;
     @media screen and (max-width: 991px) {
@@ -18,15 +20,9 @@ export const NavContainer = styled.nav`
 
     &.scrolled-down {
         transform: translateY(-90px);
-        position: fixed;
-        top: 0;
-        left: 0;
     }
     &.scrolled-up {
         transform: translateY(0);
-		position: fixed;
-        top: 0;
-        left: 0;
     }
 `;
 
@@ -102,6 +98,4 @@ export const NavMenuFABContainer = styled(FABContainer)`
     }
 `;
 
-export const NavSearch = styled.input`
-	
-`
+export const NavSearch = styled.input``;

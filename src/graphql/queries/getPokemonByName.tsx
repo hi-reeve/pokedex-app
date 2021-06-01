@@ -16,6 +16,7 @@ const GET_POKEMON = gql`
             moves {
                 move {
                     name
+					url
                 }
             }
             types {

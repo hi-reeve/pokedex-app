@@ -18,6 +18,7 @@ type AbouTitleProps = {
 export const AboutTitle = styled.h4<AbouTitleProps>`
     text-transform: capitalize;
     margin-bottom: 1rem;
+	margin-top: 1rem;
     color: ${({ color }) => `var(--nature-${color})`};
 `;
 export const AboutSubTitle = styled.p`

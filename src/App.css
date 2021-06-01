@@ -1,1 +1,14 @@
+main {
+	padding-top: 11vh;
+}
 
+@media screen and (max-width: 991px) {
+    main {
+        padding-top: 5vh;
+    }
+}
+@media screen and (max-width: 768px) {
+    main {
+        padding-top: 10vh;
+    }
+}

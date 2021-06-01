@@ -6,7 +6,7 @@ type ReleaseButtonProps = {
 };
 export const ReleaseButton = styled(Button)<ReleaseButtonProps>`
     margin-top: 0.5rem;
-    background-color: ${({ bgColor }) => `var(--nature-${bgColor ?? "water"})`};
+    background-color: ${({ bgColor }) => `var(--nature-${bgColor ?? "water-light"})`};
 
     border-radius: var(--rounded);
     padding: 0.5rem 1rem;
@@ -17,7 +17,6 @@ export const ReleaseButton = styled(Button)<ReleaseButtonProps>`
 `;
 
 export const ReleaseButtonText = styled.span`
-    color: white;
     margin-left: 0.25rem;
 `;
 

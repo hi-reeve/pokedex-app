@@ -8,7 +8,6 @@ import React, {
 import { getPokemonByName } from "@/graphql/queries/getPokemonByName";
 import { Pokemon } from "@/types/Pokemons";
 import { useParams } from "react-router";
-import { Tab, Tabs } from "@/components/ui/Tab/Tab";
 import Loader from "@/components/Loader";
 import styled from "@emotion/styled";
 import {
@@ -50,6 +49,7 @@ type RouteParams = {
 
 const PokemonDetailContainer = styled.div`
     display: flex;
+
     min-height: 100vh;
     @media screen and (max-width: 991px) {
         flex-direction: column;
@@ -89,6 +89,13 @@ const NickNameInput = styled(InputText)<NicknameInputProps>`
 const FABCatchContainer = styled(FABContainer)`
     right: 5rem;
     bottom: 1rem;
+`;
+
+const InfoContainer = styled.div`
+    width: 100%;
+    display: "flex";
+    flex-direction: "column";
+    padding: 2rem;
 `;
 const PokemonDetail = () => {
     const body = document.querySelector("body ") as HTMLBodyElement;
@@ -145,6 +152,7 @@ const PokemonDetail = () => {
                     id: pokemon.id,
                     image: pokemon.sprites.front_default,
                     name: pokemon.name,
+                    url: "",
                     nickname,
                 });
                 toastContext.setMessageHandler(
@@ -263,21 +271,11 @@ const PokemonDetail = () => {
                             handleOnCatch={handleOnCatch}
                             pokemon={pokemon}
                         />
-                        <Tabs>
-                            <Tab label="about" tabName="About">
-                                <PokemonAbout pokemon={pokemon} />
-                                <PokemonStats
-                                    color={color}
-                                    stats={pokemon.stats}
-                                />
-                            </Tab>
-                            <Tab label="move" tabName="Move">
-                                <PokemonMoves
-                                    color={color}
-                                    moves={pokemon.moves}
-                                />
-                            </Tab>
-                        </Tabs>
+                        <InfoContainer>
+                            <PokemonAbout pokemon={pokemon} />
+                            <PokemonStats color={color} stats={pokemon.stats} />
+                            <PokemonMoves color={color} moves={pokemon.moves} />
+                        </InfoContainer>
                     </PokemonDetailContainer>
                     {isTablet &&
                         createPortal(

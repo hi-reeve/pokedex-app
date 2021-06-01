@@ -14,14 +14,25 @@ import {
     ReleaseButtonText,
     ReleaseIcon,
 } from "../Button/ReleaseButton";
+import {
+    PokemonNature,
+    PokemonNatureContainer,
+    PokemonNatureIcon,
+    PokemonNatureName,
+} from "./PokemonNature";
 const CatchingDialog = React.lazy(
     () => import("@/components/dialog/CatchingDialog")
 );
 const DialogConfirmation = React.lazy(
     () => import("@/components/dialog/AfterCatchDialog")
 );
-const PokemonContainer = styled.div`
-    background: white;
+
+type PokemonContainerProps = {
+    bgColor?: string;
+};
+const PokemonContainer = styled.div<PokemonContainerProps>`
+    background-color: ${({ bgColor }) =>
+        bgColor ? `var(--nature-${bgColor}-light)` : "white"};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -146,7 +157,9 @@ const PokemonCard: React.FC<Props> = ({ pokemon, isMyPokemon }) => {
 
     return (
         <>
-            <PokemonContainer>
+            <PokemonContainer
+                bgColor={pokemon.type ? pokemon.type[0].type.name : undefined}
+            >
                 <PokemonImage
                     src={pokemon.image ?? "/images/no-pokemon.webp"}
                     alt={pokemon.name}
@@ -161,7 +174,7 @@ const PokemonCard: React.FC<Props> = ({ pokemon, isMyPokemon }) => {
                     }}
                 />
                 <PokemonInfoContainer>
-                    <PokemonId>{useFormatPokemonId(pokemon.id)}</PokemonId>
+                    <PokemonId>{pokemon.id}</PokemonId>
 
                     {isMyPokemon && (
                         <PokemonNickname>
@@ -169,6 +182,29 @@ const PokemonCard: React.FC<Props> = ({ pokemon, isMyPokemon }) => {
                         </PokemonNickname>
                     )}
                     <PokemonName>{useToCapitalize(pokemon.name)}</PokemonName>
+                    {pokemon.type && (
+                        <PokemonNatureContainer>
+                            {pokemon.type.map(type => {
+                                return (
+                                    <PokemonNature
+                                        type={type.type.name}
+                                        key={type.type.name}
+                                    >
+                                        <PokemonNatureIcon
+                                            src={`/icon/${type.type.name}-type-icon.svg`}
+                                            alt={type.type.name}
+                                            width="24px"
+                                            height="24px"
+                                        />
+                                        <PokemonNatureName>
+                                            {type.type.name}
+                                        </PokemonNatureName>
+                                    </PokemonNature>
+                                );
+                            })}
+                        </PokemonNatureContainer>
+                    )}
+
                     {!isMyPokemon && (
                         <PokemonOwned>
                             Owned : {ownedCount(pokemon.name)}

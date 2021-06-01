@@ -11,12 +11,14 @@ import {
     ReleaseIcon,
 } from "../Button/ReleaseButton";
 import useDeviceType from "@/hooks/useDeviceType";
+import { PokemonNature, PokemonNatureContainer, PokemonNatureIcon, PokemonNatureName } from "./PokemonNature";
 type PokemonInfoContainerProps = {
     color: string;
 };
 const PokemonInfoContainer = styled.div<PokemonInfoContainerProps>`
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 50%;
     padding: 2rem;
     background: ${({ color }) => `var(--nature-${color}-light)`};
@@ -38,7 +40,7 @@ const PokemonImage = styled.img`
 const PokemonDetailContainer = styled.div`
     display: flex;
     flex-direction: column;
-    padding-left: 1rem;
+    width: 100%;
     @media screen and (max-width: 991px) {
         justify-content: center;
         flex: 1;
@@ -47,49 +49,17 @@ const PokemonDetailContainer = styled.div`
 
 const PokemonName = styled.h1`
     font-size: 1.5rem;
-    color: white;
 `;
 const PokemonId = styled.h6`
     font-size: 0.75rem;
-    color: white;
 `;
 const PokemonOwned = styled.p`
     font-size: 1rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    color: white;
     font-weight: bold;
 `;
 
-const PokemonNatureContainer = styled.div`
-    display: flex;
-`;
-
-const PokemonNature = styled.div<PokemonNatureProps>`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* background: ${({ type }) => `var(--nature-${type})`}; */
-    padding: 0.25rem 0.5rem;
-    margin: 0.5rem 0.25rem 0.5rem 0;
-    border-radius: var(--rounded);
-    /* box-shadow: var(--shadow);
-    cursor: pointer; */
-`;
-const PokemonNatureIcon = styled.img`
-    width: 24px;
-    height: 24px;
-`;
-type PokemonNatureProps = {
-    type: string;
-};
-const PokemonNatureName = styled.div`
-    color: white;
-    margin-left: 0.25rem;
-    text-transform: capitalize;
-    font-weight: 600;
-    font-size: 0.8rem;
-`;
 
 type Props = {
     pokemon: Pokemon;
@@ -167,7 +137,11 @@ const PokemonDetailInfo: React.FC<Props> = ({ pokemon, handleOnCatch }) => {
                         Owned : {ownedNickname ? ownedNickname.length : 0}
                     </PokemonOwned>
                     {!isTablet && (
-                        <ReleaseButton aria-label="Button catch this pokemon" bgColor={color} onClick={handleOnCatch}>
+                        <ReleaseButton
+                            aria-label="Button catch this pokemon"
+                            bgColor={color}
+                            onClick={handleOnCatch}
+                        >
                             <ReleaseIcon
                                 src="/icon/pokeball.svg"
                                 alt="pokeball catch"

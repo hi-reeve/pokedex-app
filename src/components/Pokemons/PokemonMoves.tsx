@@ -2,10 +2,9 @@ import useDeviceType from "@/hooks/useDeviceType";
 import { useFormatMove, useToCapitalize } from "@/hooks/useFormatter";
 import { PokemonMove, PokemonMoveDetail } from "@/types/Pokemons";
 import styled from "@emotion/styled";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../Button/Button";
 import SimpleDialog from "../dialog/SimpleDialog";
-import Spinner from "../Loader/Spinner";
 import {
     AboutContainer,
     AboutTitle,
@@ -18,10 +17,16 @@ import {
     PokemonNatureName,
 } from "./PokemonNature";
 
+const MoveName = styled.h4``;
+
 const MoveTable = styled.table`
     border-collapse: collapse;
     width: 100%;
 `;
+
+const MoveClassName = styled.span`
+	font-size: .9rem;
+`
 const MoveTableHead = styled.th`
     border: 1px solid #ddd;
     background-color: var(--dark-gray);
@@ -32,6 +37,7 @@ const MoveTableHead = styled.th`
 const MoveTableColumn = styled.td`
     border: 1px solid #ddd;
     padding: 1rem;
+    font-size: 1rem;
 `;
 
 const ButtonViewDetails = styled(Button)`
@@ -100,7 +106,7 @@ const PokemonMoves: React.FC<Props> = ({ color, moves }) => {
     useEffect(() => {
         fetchMoveDetail();
         return () => {
-            setMoveList([]);
+            setMoveList(() => []);
             setLoading(false);
             setSelectedMove(undefined);
             setDetailsVisible(false);
@@ -196,7 +202,7 @@ const PokemonMoves: React.FC<Props> = ({ color, moves }) => {
             <>
                 <tr key={move.name}>
                     <MoveTableColumn>
-                        {useFormatMove(move.name)}
+                        <MoveName>{useFormatMove(move.name)}</MoveName>
                     </MoveTableColumn>
                     {isDesktop && (
                         <>
@@ -216,7 +222,7 @@ const PokemonMoves: React.FC<Props> = ({ color, moves }) => {
                                 </PokemonNatureContainer>
                             </MoveTableColumn>
                             <MoveTableColumn>
-                                {useToCapitalize(move.damage_class.name)}
+                               <MoveClassName> {useToCapitalize(move.damage_class.name)}</MoveClassName>
                             </MoveTableColumn>
                         </>
                     )}

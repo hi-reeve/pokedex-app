@@ -38,7 +38,7 @@ const ScrollToTopButton: React.FC = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
     return (
-        <ScrollTopButton onClick={handleScrollTop} ref={scrollTopRef}>
+        <ScrollTopButton onClick={handleScrollTop} ref={scrollTopRef} aria-label="button scroll to top">
             <ChevronUpIcon
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"

@@ -78,7 +78,7 @@ const Home = () => {
     const handleFetchMore = async () => {
         fetchVariables.limit += 50;
         if (searchRef.current) {
-            const keyword = searchRef.current.value;
+            const keyword = searchRef.current.value.trim().toLowerCase();
             if (keyword === "") {
                 pokeLocal = await db.pokemons
                     .offset(fetchVariables.offset)
@@ -137,7 +137,7 @@ const Home = () => {
     };
 
     const onInputSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const keyword = e.target.value;
+        const keyword = e.target.value.trim().toLowerCase();
         if (keyword === "") {
             pokeLocal = await db.pokemons
                 .offset(fetchVariables.offset)

@@ -2,7 +2,7 @@ import useDeviceType from "@/hooks/useDeviceType";
 import { useFormatMove, useToCapitalize } from "@/hooks/useFormatter";
 import { PokemonMove, PokemonMoveDetail } from "@/types/Pokemons";
 import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Button } from "../Button/Button";
 import SimpleDialog from "../dialog/SimpleDialog";
 import {
@@ -25,8 +25,8 @@ const MoveTable = styled.table`
 `;
 
 const MoveClassName = styled.span`
-	font-size: .9rem;
-`
+    font-size: 0.9rem;
+`;
 const MoveTableHead = styled.th`
     border: 1px solid #ddd;
     background-color: var(--dark-gray);
@@ -192,50 +192,53 @@ const PokemonMoves: React.FC<Props> = ({ color, moves }) => {
         }
     };
 
-    const tableData = moveList
+	const tableData = useMemo(() => {
+		return moveList
         .sort(({ name: prevName }, { name: currentName }) => {
             if (prevName < currentName) return -1;
             else if (prevName > currentName) return 1;
             return 0;
         })
         .map(move => (
-            <>
-                <tr key={move.name}>
-                    <MoveTableColumn>
-                        <MoveName>{useFormatMove(move.name)}</MoveName>
-                    </MoveTableColumn>
-                    {isDesktop && (
-                        <>
-                            <MoveTableColumn>
-                                <PokemonNatureContainer>
-                                    <PokemonNature type={move.type.name}>
-                                        <PokemonNatureIcon
-                                            src={`/icon/${move.type.name}-type-icon.svg`}
-                                            alt={move.type.name}
-                                            width="24px"
-                                            height="24px"
-                                        />
-                                        <PokemonNatureName>
-                                            {move.type.name}
-                                        </PokemonNatureName>
-                                    </PokemonNature>
-                                </PokemonNatureContainer>
-                            </MoveTableColumn>
-                            <MoveTableColumn>
-                               <MoveClassName> {useToCapitalize(move.damage_class.name)}</MoveClassName>
-                            </MoveTableColumn>
-                        </>
-                    )}
-                    <MoveTableColumn>
-                        <ButtonViewDetails
-                            onClick={() => handleViewDetails(move.name)}
-                        >
-                            View Details
-                        </ButtonViewDetails>
-                    </MoveTableColumn>
-                </tr>
-            </>
-        ));
+            <tr key={move.name}>
+                <MoveTableColumn>
+                    <MoveName>{useFormatMove(move.name)}</MoveName>
+                </MoveTableColumn>
+                {isDesktop && (
+                    <>
+                        <MoveTableColumn>
+                            <PokemonNatureContainer>
+                                <PokemonNature type={move.type.name}>
+                                    <PokemonNatureIcon
+                                        src={`/icon/${move.type.name}-type-icon.svg`}
+                                        alt={move.type.name}
+                                        width="24px"
+                                        height="24px"
+                                    />
+                                    <PokemonNatureName>
+                                        {move.type.name}
+                                    </PokemonNatureName>
+                                </PokemonNature>
+                            </PokemonNatureContainer>
+                        </MoveTableColumn>
+                        <MoveTableColumn>
+                            <MoveClassName>
+                                {" "}
+                                {useToCapitalize(move.damage_class.name)}
+                            </MoveClassName>
+                        </MoveTableColumn>
+                    </>
+                )}
+                <MoveTableColumn>
+                    <ButtonViewDetails
+                        onClick={() => handleViewDetails(move.name)}
+                    >
+                        View Details
+                    </ButtonViewDetails>
+                </MoveTableColumn>
+            </tr>
+        ))
+	},[moveList]);
     if (loading) return <p>Loading...</p>;
     return (
         <AboutContainer>

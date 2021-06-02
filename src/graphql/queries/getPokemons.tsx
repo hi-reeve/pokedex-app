@@ -1,5 +1,5 @@
 import { PokemonsResponse } from "@/types/Pokemons";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 
 export const GET_POKEMONS = gql`
@@ -14,7 +14,7 @@ export const GET_POKEMONS = gql`
                 id
                 name
                 image
-				url
+                url
             }
         }
     }
@@ -25,16 +25,31 @@ export type getPokemonVariable = {
     offset: number;
 };
 export const getPokemon = (variable: getPokemonVariable) => {
-    const { data, loading, error, fetchMore, networkStatus } =
-        useQuery<PokemonsResponse>(GET_POKEMONS, {
-            variables: variable,
-        });
+    // const { data, loading, error, fetchMore, networkStatus } = useLazyQuery<
+    //     PokemonsResponse,
+    //     getPokemonVariable
+    // >(GET_POKEMONS, {
+    //     variables: {
+    //         limit: 1200,
+    //         offset: 0,
+    //     },
+    //     fetchPolicy: "cache-first",
+    // });
+
+    const [getPokemonTrigger, { data, loading }] = useLazyQuery<
+        PokemonsResponse,
+        getPokemonVariable
+    >(GET_POKEMONS, {
+        variables: {
+            limit: 1200,
+            offset: 0,
+        },
+        fetchPolicy: "cache-first",
+    });
 
     return {
         data,
         loading,
-        error,
-        fetchMore,
-        networkStatus,
+        getPokemonTrigger,
     };
 };

@@ -16,7 +16,7 @@ const GET_POKEMON = gql`
             moves {
                 move {
                     name
-					url
+                    url
                 }
             }
             types {
@@ -50,6 +50,7 @@ export const getPokemonByName = (variable: GetPokemonByNameVariable) => {
             variables: {
                 name: variable.name,
             },
+            fetchPolicy: "cache-first",
         }
     );
     return {

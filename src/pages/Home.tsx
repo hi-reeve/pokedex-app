@@ -6,7 +6,7 @@ import {
     PokemonType,
 } from "@/types/Pokemons";
 
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import "@/pages/Home.css";
 import { Link } from "react-router-dom";
 import Loader from "@/components/Loader";
@@ -14,6 +14,9 @@ import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import Spinner from "@/components/Loader/Spinner";
 import styled from "@emotion/styled";
 import { useToCapitalize } from "@/hooks/useFormatter";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db, IAllPokemons } from "@/db";
+import { addBulkPokemons } from "@/db/pokemon";
 
 const PokemonCard = React.lazy(
     () => import("@/components/Pokemons/PokemonCard")
@@ -40,7 +43,6 @@ const FilterContainer = styled.div`
 const SearchInput = styled.input`
     padding: 1rem;
     width: 100%;
-    border-radius: var(--rounded);
     border: none;
     border-bottom: 1px solid black;
     &:focus {
@@ -49,114 +51,148 @@ const SearchInput = styled.input`
 `;
 
 const fetchVariables: getPokemonVariable = {
-    limit: 20,
+    limit: 50,
     offset: 0,
 };
 const Home = () => {
     const [pokemonList, setPokemonList] = useState<Pokemons[]>([]);
-    const { data, error, loading, fetchMore } = getPokemon(fetchVariables);
+    const { data, loading, getPokemonTrigger } = getPokemon(fetchVariables);
+    const searchRef = useRef<HTMLInputElement>(null);
 
-    const convertData = (newData: PokemonsResponse | undefined) => {
-        if (newData) {
-            const {
-                pokemons: { status, results, next, count },
-            } = newData;
+    const isFirstTime = JSON.parse(localStorage.getItem("first") ?? "true");
+    const scrollPos = sessionStorage.getItem("scrollpos") ?? 0;
+    let pokeLocal = useLiveQuery(() =>
+        db.pokemons
+            .offset(fetchVariables.offset)
+            .limit(fetchVariables.limit)
+            .toArray()
+    );
 
-            if (status && next && results.length !== count) {
-                results.map(async pokemon => {
-                    const response = await fetch(pokemon.url);
-                    const data = await response.json();
-                    const pokeType = data.types.map((type: PokemonType[]) => {
-                        return type;
-                    });
-                    const pokeObj = {
-                        ...pokemon,
-                        type: pokeType,
-                    };
-
-                    setPokemonList(pokemons => [...pokemons, pokeObj]);
-                });
-
-                // setPokemonList(pokemons => {
-                //     return [...pokemons, ...results];
-                // });
+    const handleFetchMore = async () => {
+        fetchVariables.limit += 50;
+        if (searchRef.current) {
+            const keyword = searchRef.current.value;
+            if (keyword === "") {
+                pokeLocal = await db.pokemons
+                    .offset(fetchVariables.offset)
+                    .limit(fetchVariables.limit)
+                    .toArray();
+            } else {
+                pokeLocal = await db.pokemons
+                    .where("name")
+                    .startsWith(keyword)
+                    .offset(fetchVariables.offset)
+                    .limit(fetchVariables.limit)
+                    .toArray();
             }
+        }
+        if (pokeLocal) {
+            setPokemonList(pokeLocal as IAllPokemons[]);
         }
     };
 
     useEffect(() => {
-        convertData(data);
+        if (isFirstTime == true) {
+            getPokemonTrigger();
+        }
+    }, []);
 
-        return () => {
-            fetchVariables.offset = 0;
-            setPokemonList([]);
-        };
+    useEffect(() => {
+        if (data) {
+            addBulkPokemons(data.pokemons.results as IAllPokemons[]);
+            handleFetchMore();
+            localStorage.setItem("first", "false");
+        }
     }, [data]);
 
-    const handleFetchMore = async () => {
-        fetchVariables.offset += fetchVariables.limit;
-        const { data: fetchMoreData } = await fetchMore({
-            variables: fetchVariables,
-        });
-        convertData(fetchMoreData);
-    };
+    useEffect(() => {
+        if (pokeLocal) {
+            setPokemonList(() => pokeLocal as IAllPokemons[]);
+        }
 
+        return () => {
+            setPokemonList(() => []);
+        };
+    }, [pokeLocal]);
     const { lastElemenRef } = useIntersectionObserver(handleFetchMore);
 
-    if (error)
-        return (
-            <TopContainer>
-                <p>Error {error.message}</p>
-            </TopContainer>
-        );
+    useEffect(() => {
+        if (scrollPos) {
+            const timeout = setTimeout(() => {
+                window.scrollTo(0, +scrollPos);
+                sessionStorage.removeItem("scrollpos");
+                clearTimeout(timeout);
+            }, 100);
+        }
+    }, [scrollPos]);
+    const handleClickLink = () => {
+        sessionStorage.setItem("scrollpos", window.pageYOffset.toString());
+    };
 
+    const onInputSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const keyword = e.target.value;
+        if (keyword === "") {
+            pokeLocal = await db.pokemons
+                .offset(fetchVariables.offset)
+                .limit(fetchVariables.limit)
+                .toArray();
+        } else {
+            pokeLocal = await db.pokemons
+                .where("name")
+                .startsWith(keyword)
+                .toArray();
+        }
+        if (pokeLocal) {
+            setPokemonList(() => pokeLocal as IAllPokemons[]);
+        }
+    };
     if (loading) return <Loader />;
 
-    if (pokemonList.length === 0)
-        return (
-            <TopContainer>
-                <p>No pokemons</p>
-            </TopContainer>
-        );
+    if (pokeLocal && pokeLocal.length === 0) return <Loader />;
 
     return (
         <Suspense fallback={<Spinner />}>
             <TopContainer>
                 <TitleIntro>
                     Simple pokedex app for pokemon lovers
-                    {/* <FilterContainer>
+                    <FilterContainer>
                         <SearchInput
                             type="text"
                             placeholder="Find pokemon name"
+                            ref={searchRef}
+                            onChange={onInputSearch}
                         />
-                    </FilterContainer> */}
+                    </FilterContainer>
                 </TitleIntro>
             </TopContainer>
             <div className="pokemon--container">
-                {pokemonList
-                    .sort(({ id: a }, { id: b }) => a - b)
-                    .map((pokemon, index) => {
-                        if (pokemonList.length === index + 1) {
-                            return (
-                                <Link
-                                    ref={lastElemenRef}
-                                    to={`/pokemon/${pokemon.name}`}
-                                    key={pokemon.id}
-                                >
-                                    <PokemonCard pokemon={pokemon} />
-                                </Link>
-                            );
-                        } else {
-                            return (
-                                <Link
-                                    to={`/pokemon/${pokemon.name}`}
-                                    key={pokemon.id}
-                                >
-                                    <PokemonCard pokemon={pokemon} />
-                                </Link>
-                            );
-                        }
-                    })}
+                {pokemonList.map((pokemon, index) => {
+                    if (
+                        pokemonList.length === index + 1 &&
+                        pokemonList.length >= 50
+                    ) {
+                        return (
+                            <Link
+                                ref={lastElemenRef}
+                                to={`/pokemon/${pokemon.name}`}
+                                key={pokemon.id}
+                                onClick={handleClickLink}
+                            >
+                                <PokemonCard pokemon={pokemon} />
+                            </Link>
+                        );
+                    } else {
+                        return (
+                            <Link
+                                to={`/pokemon/${pokemon.name}`}
+                                key={pokemon.id}
+                                onClick={handleClickLink}
+                            >
+                                <PokemonCard pokemon={pokemon} />
+                            </Link>
+                        );
+                    }
+                })}
             </div>
         </Suspense>
     );

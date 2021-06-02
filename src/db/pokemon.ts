@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { db, IAllPokemons } from "@/db";
 import { PokemonsWithNickname } from "@/types/Pokemons";
 
 export const addNewPokemon = async (payload: PokemonsWithNickname) => {
@@ -6,7 +6,7 @@ export const addNewPokemon = async (payload: PokemonsWithNickname) => {
         id: payload.id,
         name: payload.name,
         nickname: payload.nickname,
-		url : "",
+        url: "",
         image: payload.image,
     });
 };
@@ -22,4 +22,8 @@ export const checkExistingNickname = async (nickname: string) => {
 
 export const releasePokemon = async (id: number) => {
     await db.pokemon.delete(id);
+};
+
+export const addBulkPokemons = async (payload: IAllPokemons[]) => {
+    await db.pokemons.bulkAdd(payload);
 };

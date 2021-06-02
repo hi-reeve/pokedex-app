@@ -18,6 +18,7 @@ export const getNatureByType = (variable: GetNatureTypeVariable) => {
             variables: {
                 nature: variable,
             },
+            fetchPolicy: "cache-first",
         }
     );
     return {

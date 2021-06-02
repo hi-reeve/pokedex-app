@@ -1,10 +1,6 @@
 import React, { useContext, useRef } from "react";
 import { Navbar } from "./components/ui/Navbar";
-import {
-    Switch,
-    HashRouter as Router,
-    Route,
-} from "react-router-dom";
+import { Switch, HashRouter as Router, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import MyPokemon from "./pages/MyPokemon";
@@ -13,6 +9,7 @@ import { ToastContext } from "./context/ToastContext";
 import { createPortal } from "react-dom";
 import { SimpleToast } from "./components/toast/Toast";
 import { CSSTransition } from "react-transition-group";
+import ScrollToTopButton from "./components/Button/ScrollTopButton";
 
 function App() {
     const body = document.querySelector("body") as HTMLBodyElement;
@@ -36,21 +33,25 @@ function App() {
                     </Switch>
                 </main>
             </Router>
+
             {createPortal(
-                <CSSTransition
-                    in={toastContext.visible}
-                    classNames="toast"
-                    timeout={300}
-                    nodeRef={nodeRef}
-                    unmountOnExit
-                >
-                    <SimpleToast
-                        ref={nodeRef}
-                        onClick={() => toastContext.closeToast()}
+                <>
+                    <ScrollToTopButton />
+                    <CSSTransition
+                        in={toastContext.visible}
+                        classNames="toast"
+                        timeout={300}
+                        nodeRef={nodeRef}
+                        unmountOnExit
                     >
-                        {toastContext.message}
-                    </SimpleToast>
-                </CSSTransition>,
+                        <SimpleToast
+                            ref={nodeRef}
+                            onClick={() => toastContext.closeToast()}
+                        >
+                            {toastContext.message}
+                        </SimpleToast>
+                    </CSSTransition>
+                </>,
                 body
             )}
         </div>

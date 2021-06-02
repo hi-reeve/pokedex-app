@@ -32,12 +32,19 @@ const MoveTableHead = styled.th`
     background-color: var(--dark-gray);
     color: white;
     padding: 1rem;
+    font-size: 1.1rem;
+    @media screen and (max-width: 525px) {
+        font-size: 0.9rem;
+    }
 `;
 
 const MoveTableColumn = styled.td`
     border: 1px solid #ddd;
     padding: 1rem;
     font-size: 1rem;
+    @media screen and (max-width: 525px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const ButtonViewDetails = styled(Button)`
@@ -45,6 +52,10 @@ const ButtonViewDetails = styled(Button)`
     background-color: var(--nature-water-light);
     color: white;
     border-radius: var(--rounded);
+    @media screen and (max-width: 525px) {
+        font-size: 0.8rem;
+        padding: 0.25rem 1rem;
+    }
 `;
 
 const MoveDetailContainer = styled.div`
@@ -87,18 +98,11 @@ const PokemonMoves: React.FC<Props> = ({ color, moves }) => {
     const fetchMoveDetail = async () => {
         const arrayMove: PokemonMoveDetail[] = [];
 
-        try {
-            setLoading(true);
-            moves.map(async move => {
-                const response = await fetch(move.move.url);
-                const detail: PokemonMoveDetail = await response.json();
-                setMoveList(oldMove => [...oldMove, detail]);
-            });
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
+        moves.map(async move => {
+            const response = await fetch(move.move.url);
+            const detail: PokemonMoveDetail = await response.json();
+            setMoveList(oldMove => [...oldMove, detail]);
+        });
 
         return arrayMove;
     };
@@ -173,10 +177,13 @@ const PokemonMoves: React.FC<Props> = ({ color, moves }) => {
                         </MoveDetailWrapper>
                     </MoveDetailContainer>
                     <ButtonViewDetails
-                        style={{ marginTop: "8px" }}
+                        style={{
+                            marginTop: "8px",
+                            marginLeft: "auto",
+                        }}
                         onClick={() => setDetailsVisible(false)}
                     >
-                        Confirm
+                        Done
                     </ButtonViewDetails>
                 </>
             );
@@ -192,53 +199,53 @@ const PokemonMoves: React.FC<Props> = ({ color, moves }) => {
         }
     };
 
-	const tableData = useMemo(() => {
-		return moveList
-        .sort(({ name: prevName }, { name: currentName }) => {
-            if (prevName < currentName) return -1;
-            else if (prevName > currentName) return 1;
-            return 0;
-        })
-        .map(move => (
-            <tr key={move.name}>
-                <MoveTableColumn>
-                    <MoveName>{useFormatMove(move.name)}</MoveName>
-                </MoveTableColumn>
-                {isDesktop && (
-                    <>
-                        <MoveTableColumn>
-                            <PokemonNatureContainer>
-                                <PokemonNature type={move.type.name}>
-                                    <PokemonNatureIcon
-                                        src={`/icon/${move.type.name}-type-icon.svg`}
-                                        alt={move.type.name}
-                                        width="24px"
-                                        height="24px"
-                                    />
-                                    <PokemonNatureName>
-                                        {move.type.name}
-                                    </PokemonNatureName>
-                                </PokemonNature>
-                            </PokemonNatureContainer>
-                        </MoveTableColumn>
-                        <MoveTableColumn>
-                            <MoveClassName>
-                                {" "}
-                                {useToCapitalize(move.damage_class.name)}
-                            </MoveClassName>
-                        </MoveTableColumn>
-                    </>
-                )}
-                <MoveTableColumn>
-                    <ButtonViewDetails
-                        onClick={() => handleViewDetails(move.name)}
-                    >
-                        View Details
-                    </ButtonViewDetails>
-                </MoveTableColumn>
-            </tr>
-        ))
-	},[moveList]);
+    const tableData = useMemo(() => {
+        return moveList
+            .sort(({ name: prevName }, { name: currentName }) => {
+                if (prevName < currentName) return -1;
+                else if (prevName > currentName) return 1;
+                return 0;
+            })
+            .map(move => (
+                <tr key={move.name}>
+                    <MoveTableColumn>
+                        <MoveName>{useFormatMove(move.name)}</MoveName>
+                    </MoveTableColumn>
+                    {isDesktop && (
+                        <>
+                            <MoveTableColumn>
+                                <PokemonNatureContainer>
+                                    <PokemonNature type={move.type.name}>
+                                        <PokemonNatureIcon
+                                            src={`/icon/${move.type.name}-type-icon.svg`}
+                                            alt={move.type.name}
+                                            width="24px"
+                                            height="24px"
+                                        />
+                                        <PokemonNatureName>
+                                            {move.type.name}
+                                        </PokemonNatureName>
+                                    </PokemonNature>
+                                </PokemonNatureContainer>
+                            </MoveTableColumn>
+                            <MoveTableColumn>
+                                <MoveClassName>
+                                    {" "}
+                                    {useToCapitalize(move.damage_class.name)}
+                                </MoveClassName>
+                            </MoveTableColumn>
+                        </>
+                    )}
+                    <MoveTableColumn>
+                        <ButtonViewDetails
+                            onClick={() => handleViewDetails(move.name)}
+                        >
+                            View Details
+                        </ButtonViewDetails>
+                    </MoveTableColumn>
+                </tr>
+            ));
+    }, [moveList]);
     if (loading) return <p>Loading...</p>;
     return (
         <AboutContainer>

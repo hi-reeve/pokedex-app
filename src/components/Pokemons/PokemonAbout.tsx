@@ -41,8 +41,7 @@ const PokemonAbout: React.FC<Props> = ({ pokemon }) => {
                     {pokemon.abilities.map((ability, index) => {
                         return (
                             <AboutListItem key={ability.ability.name}>
-                                {index + 1}
-                                {". "}
+                                
                                 {ability.ability.name}{" "}
                                 {ability.is_hidden ? "(hidden ability)" : ""}
                             </AboutListItem>

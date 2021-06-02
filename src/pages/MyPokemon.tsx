@@ -1,4 +1,3 @@
-
 import Spinner from "@/components/Loader/Spinner";
 import { db } from "@/db";
 import styled from "@emotion/styled";
@@ -11,6 +10,19 @@ const PokemonCard = React.lazy(
 );
 const MyPokemonContainer = styled.div`
     padding: 2rem;
+    min-height: 80vh;
+    display: grid;
+    place-items: center;
+`;
+
+const NoPokemonText = styled.h4`
+    font-size: 2rem;
+    @media screen and (max-width: 991px) {
+        font-size: 1.5rem;
+    }
+    @media screen and (max-width: 525px) {
+        font-size: 1rem;
+    }
 `;
 const MyPokemonTitle = styled.h1`
     margin: 2rem 0 0 2rem;
@@ -25,9 +37,10 @@ const MyPokemon = () => {
     if (!myPokemons || myPokemons.length === 0)
         return (
             <MyPokemonContainer>
-                <h4>You haven't catch any pokemon yet</h4>
+                <NoPokemonText>You haven't catch any pokemon yet</NoPokemonText>
             </MyPokemonContainer>
         );
+
     return (
         <>
             <Suspense fallback={<Spinner />}>

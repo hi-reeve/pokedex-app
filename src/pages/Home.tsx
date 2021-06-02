@@ -36,18 +36,25 @@ const TopContainer = styled.div`
 const FilterContainer = styled.div`
     display: flex;
     margin-top: 1rem;
+    position: relative;
     @media screen and (max-width: 525px) {
         flex-direction: column;
     }
 `;
 const SearchInput = styled.input`
     padding: 1rem;
+    padding-left: 3rem;
     width: 100%;
     border: none;
     border-bottom: 1px solid black;
     &:focus {
         outline: none;
     }
+`;
+
+const NotFoundText = styled.p`
+    font-size: 1rem;
+    font-weight: bold;
 `;
 
 const fetchVariables: getPokemonVariable = {
@@ -162,37 +169,59 @@ const Home = () => {
                             ref={searchRef}
                             onChange={onInputSearch}
                         />
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            className="bi bi-search"
+                            style={{
+                                position: "absolute",
+                                left: "10px",
+                                bottom: "1rem",
+                                width: "20px",
+                                height: "20px",
+                            }}
+                            viewBox="0 0 16 16"
+                        >
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
                     </FilterContainer>
                 </TitleIntro>
             </TopContainer>
             <div className="pokemon--container">
-                {pokemonList.map((pokemon, index) => {
-                    if (
-                        pokemonList.length === index + 1 &&
-                        pokemonList.length >= 50
-                    ) {
-                        return (
-                            <Link
-                                ref={lastElemenRef}
-                                to={`/pokemon/${pokemon.name}`}
-                                key={pokemon.id}
-                                onClick={handleClickLink}
-                            >
-                                <PokemonCard pokemon={pokemon} />
-                            </Link>
-                        );
-                    } else {
-                        return (
-                            <Link
-                                to={`/pokemon/${pokemon.name}`}
-                                key={pokemon.id}
-                                onClick={handleClickLink}
-                            >
-                                <PokemonCard pokemon={pokemon} />
-                            </Link>
-                        );
-                    }
-                })}
+                {pokemonList.length > 0 &&
+                    pokemonList.map((pokemon, index) => {
+                        if (
+                            pokemonList.length === index + 1 &&
+                            pokemonList.length >= 50
+                        ) {
+                            return (
+                                <Link
+                                    ref={lastElemenRef}
+                                    to={`/pokemon/${pokemon.name}`}
+                                    key={pokemon.id}
+                                    onClick={handleClickLink}
+                                >
+                                    <PokemonCard pokemon={pokemon} />
+                                </Link>
+                            );
+                        } else {
+                            return (
+                                <Link
+                                    to={`/pokemon/${pokemon.name}`}
+                                    key={pokemon.id}
+                                    onClick={handleClickLink}
+                                >
+                                    <PokemonCard pokemon={pokemon} />
+                                </Link>
+                            );
+                        }
+                    })}
+                {pokemonList.length === 0 && (
+                    <NotFoundText>
+                        Can't find pokemon{" "}
+                        {`"${searchRef.current?.value}"` ?? ""}
+                    </NotFoundText>
+                )}
             </div>
         </Suspense>
     );

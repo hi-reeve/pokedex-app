@@ -10,6 +10,7 @@ export const AboutWrapper = styled.div`
     margin-top: 0.25rem;
     margin-bottom: 0.25rem;
     flex-direction: row;
+    border-bottom: 1px solid hsla(0, 0%, 0%, 0.1);
 `;
 
 type AbouTitleProps = {
@@ -18,16 +19,20 @@ type AbouTitleProps = {
 export const AboutTitle = styled.h4<AbouTitleProps>`
     text-transform: capitalize;
     margin-bottom: 1rem;
-	margin-top: 1rem;
+    margin-top: 1rem;
     color: ${({ color }) => `var(--nature-${color})`};
+    font-size: 1.5rem;
+    @media screen and (max-width: 525px) {
+        font-size: 1.2rem;
+    }
 `;
 export const AboutSubTitle = styled.p`
-	font-size: .8rem;
+    font-size: 0.8rem;
     text-transform: capitalize;
     margin-bottom: 0.5rem;
     flex: 0.6;
 `;
-export const AboutListWrapper = styled.ul`
+export const AboutListWrapper = styled.ol`
     list-style-type: none;
     flex: 1;
 `;
@@ -42,6 +47,6 @@ export const AboutLabel = styled.p`
     font-weight: 400;
     flex: 1;
     margin: 0;
-	font-size: 0.8rem;
+    font-size: 0.8rem;
     display: block;
 `;

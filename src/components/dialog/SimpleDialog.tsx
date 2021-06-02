@@ -10,6 +10,8 @@ const SimpleDialogContainer = styled(DialogContainer)`
     background-color: white;
     padding: 2rem;
 	overflow: auto;
+	display: flex;
+	flex-direction: column;
     @media screen and (max-width: 525px) {
         width: 80vw;
     }

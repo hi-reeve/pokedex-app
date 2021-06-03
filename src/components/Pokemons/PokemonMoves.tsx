@@ -67,6 +67,9 @@ const MoveDetailWrapper = styled.div`
     display: flex;
     margin-top: 0.25rem;
     margin-bottom: 0.25rem;
+    &:not(:last-child) {
+        border-bottom: 1px solid hsla(0, 0%, 0%, 0.1);
+    }
 `;
 
 const MoveDetailLabel = styled.span`
@@ -82,6 +85,7 @@ const MoveDetailText = styled.span`
 const MoveDetailDesc = styled.p`
     font-size: 0.9rem;
     line-height: 1.5rem;
+	white-space: pre-line;
 `;
 
 type Props = {
@@ -122,6 +126,12 @@ const PokemonMoves: React.FC<Props> = ({ color, moves }) => {
             return (
                 <>
                     <MoveDetailContainer>
+                        <MoveDetailWrapper>
+                            <MoveDetailLabel>Name : </MoveDetailLabel>
+                            <MoveDetailText>
+								{useFormatMove(selectedMove.name)}
+                            </MoveDetailText>
+                        </MoveDetailWrapper>
                         <MoveDetailWrapper>
                             <MoveDetailLabel>Accuracy : </MoveDetailLabel>
                             <MoveDetailText>

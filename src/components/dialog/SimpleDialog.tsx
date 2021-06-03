@@ -7,11 +7,12 @@ const SimpleDialogOverlay = styled(DialogOverlay)`
     background-color: hsla(0, 0%, 0%, 0.5);
 `;
 const SimpleDialogContainer = styled(DialogContainer)`
+    min-width: 50vw;
     background-color: white;
     padding: 2rem;
-	overflow: auto;
-	display: flex;
-	flex-direction: column;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
     @media screen and (max-width: 525px) {
         width: 80vw;
     }

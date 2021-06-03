@@ -18,3 +18,10 @@ https://pokedex.creeve.me/#/
   
 Design inspired by : [Behance](https://www.behance.net/gallery/95727849/Pokdex-App?tracking_source=search_projects_recommended%7Cpokemon%20app) </br>
 Design Credits : [Flavio Farias](https://www.behance.net/flaviofpsj)
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+  

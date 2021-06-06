@@ -1,7 +1,7 @@
 
 # POKEDEX APP
 
-A brief description of what this project does and who it's for
+A simple pokedex app for pokemon lovers
 
 
 ## Demo
@@ -11,7 +11,7 @@ https://pokedex.creeve.me/#/
   
 ## Tech Stack
 
-**Client:** React, Graphql, Apollo Client
+build using React, Graphql, Apollo Client, Emotionsh
 
 
 ## Design Copyright
